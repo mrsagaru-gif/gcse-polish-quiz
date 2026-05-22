@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz GCSE — Język Polski</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f7f5f0;
+  --surface: #ffffff;
+  --surface2: #f0ede8;
+  --border: #e0dbd4;
+  --text: #1a1714;
+  --text2: #6b635c;
+  --text3: #9c9089;
+  --accent: #c1440e;
+  --accent-bg: #fdf0eb;
+  --green: #1a6b3c;
+  --green-bg: #ebf5f0;
+  --blue: #1a4a7a;
+  --blue-bg: #ebf0f8;
+  --warn: #8a5c00;
+  --warn-bg: #fff8eb;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --font: 'DM Sans', sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+header {
+  margin-bottom: 2rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.logo-mark {
+  width: 36px;
+  height: 36px;
+  background: var(--accent);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  font-family: var(--mono);
+  flex-shrink: 0;
+}
+
+header h1 {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+header p {
+  font-size: 14px;
+  color: var(--text2);
+  margin-top: 4px;
+}
+
+.level-selector {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1.25rem;
+  background: var(--surface2);
+  padding: 4px;
+  border-radius: var(--radius);
+  width: fit-content;
+}
+
+.level-btn {
+  padding: 7px 20px;
+  border: none;
+  border-radius: 7px;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  background: transparent;
+  color: var(--text2);
+  transition: all 0.15s;
+}
+
+.level-btn.active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.filter-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.filter-chip {
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text2);
+  font-size: 12px;
+  font-family: var(--font);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.filter-chip.active {
+  background: var(--green-bg);
+  color: var(--green);
+  border-color: #a8d4bc;
+}
+
+.progress-wrap {
+  background: var(--surface2);
+  border-radius: 4px;
+  height: 4px;
+  margin-bottom: 1.25rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 1.25rem;
+}
+
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  text-align: center;
+}
+
+.stat-val {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+  font-family: var(--mono);
+}
+
+.stat-lbl {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+.question-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.q-meta {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.badge-level { background: var(--accent-bg); color: var(--accent); }
+.badge-type { background: var(--blue-bg); color: var(--blue); }
+.badge-topic { background: var(--surface2); color: var(--text2); }
+
+.q-text {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+.q-hint {
+  font-size: 13px;
+  color: var(--text3);
+  margin-bottom: 14px;
+}
+
+.q-hint span {
+  color: var(--text2);
+}
+
+textarea.answer-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg);
+  resize: vertical;
+  min-height: 60px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+textarea.answer-input:focus {
+  border-color: var(--accent);
+}
+
+.btn-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn {
+  padding: 9px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-family: var(--font);
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--surface);
+  color: var(--text);
+  transition: all 0.15s;
+}
+
+.btn:hover { background: var(--surface2); }
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  border-color: transparent;
+}
+
+.btn-primary:hover { background: #a83a0c; }
+
+.feedback {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.feedback.correct { background: var(--green-bg); color: var(--green); border: 1px solid #a8d4bc; }
+.feedback.incorrect { background: var(--accent-bg); color: var(--accent); border: 1px solid #f0c4b4; }
+.feedback.partial { background: var(--warn-bg); color: var(--warn); border: 1px solid #f0d898; }
+
+.correct-answer {
+  margin-top: 8px;
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.diff-missing {
+  font-weight: 600;
+  background: rgba(193,68,14,0.15);
+  border-bottom: 2px solid var(--accent);
+  border-radius: 2px;
+}
+
+.mc-options {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.mc-btn {
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-align: left;
+  cursor: pointer;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  font-family: var(--font);
+  transition: all 0.15s;
+}
+
+.mc-btn:hover:not(:disabled) { background: var(--surface2); }
+.mc-btn.correct { background: var(--green-bg); color: var(--green); border-color: #a8d4bc; font-weight: 500; }
+.mc-btn.incorrect { background: var(--accent-bg); color: var(--accent); border-color: #f0c4b4; }
+.mc-btn:disabled { cursor: default; }
+
+.results-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  text-align: center;
+}
+
+.results-score {
+  font-size: 56px;
+  font-weight: 600;
+  color: var(--text);
+  font-family: var(--mono);
+}
+
+.results-label {
+  font-size: 16px;
+  color: var(--text2);
+  margin: 8px 0 1.75rem;
+}
+
+.results-breakdown {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 1.75rem;
+}
+
+.hidden { display: none; }
+
+@media (max-width: 480px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .results-breakdown { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="logo">
+      <div class="logo-mark">PL</div>
+      <h1>Quiz GCSE — Język Polski</h1>
+    </div>
+    <p>Przygotowanie do egzaminów GCSE Polish · AQA / Edexcel / OCR</p>
+  </header>
+
+  <div class="level-selector">
+    <button class="level-btn active" onclick="setLevel('foundation')" id="btn-foundation">Foundation</button>
+    <button class="level-btn" onclick="setLevel('higher')" id="btn-higher">Higher</button>
+  </div>
+
+  <div class="filter-row" id="filter-row"></div>
+
+  <div class="progress-wrap"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+
+  <div class="stats-row">
+    <div class="stat"><div class="stat-val" id="stat-q">—</div><div class="stat-lbl">pytanie</div></div>
+    <div class="stat"><div class="stat-val" id="stat-correct">0</div><div class="stat-lbl">poprawne</div></div>
+    <div class="stat"><div class="stat-val" id="stat-wrong">0</div><div class="stat-lbl">błędy</div></div>
+    <div class="stat"><div class="stat-val" id="stat-pct">—</div><div class="stat-lbl">wynik</div></div>
+  </div>
+
+  <div id="quiz-area"></div>
+  <div id="results-area" class="hidden"></div>
+
+</div>
+
+<script>
+const DB = {
+foundation: [
+  {type:"vocab",topic:"Rodzina",q:"Jak po polsku 'grandmother'?",answer:"babcia",hint:"rzeczownik żeński"},
+  {type:"vocab",topic:"Rodzina",q:"Jak po polsku 'brother'?",answer:"brat",hint:"rzeczownik"},
+  {type:"vocab",topic:"Rodzina",q:"Jak po polsku 'sister'?",answer:"siostra",hint:"rzeczownik żeński"},
+  {type:"vocab",topic:"Rodzina",q:"Jak po polsku 'parents'?",answer:"rodzice",hint:"liczba mnoga"},
+  {type:"vocab",topic:"Rodzina",q:"Jak po polsku 'husband'?",answer:"mąż",hint:"rzeczownik, mężczyzna"},
+  {type:"vocab",topic:"Rodzina",q:"Jak po polsku 'wife'?",answer:"żona",hint:"rzeczownik żeński"},
+  {type:"vocab",topic:"Szkoła",q:"Jak po polsku 'teacher' (kobieta)?",answer:"nauczycielka",hint:"forma żeńska"},
+  {type:"vocab",topic:"Szkoła",q:"Jak po polsku 'homework'?",answer:"praca domowa",hint:"dwa słowa"},
+  {type:"vocab",topic:"Szkoła",q:"Jak po polsku 'library'?",answer:"biblioteka",hint:"rzeczownik żeński"},
+  {type:"vocab",topic:"Szkoła",q:"Jak po polsku 'lesson'?",answer:"lekcja",hint:"rzeczownik żeński"},
+  {type:"vocab",topic:"Dom",q:"Jak po polsku 'bedroom'?",answer:"sypialnia",hint:"pokój do spania"},
+  {type:"vocab",topic:"Dom",q:"Jak po polsku 'kitchen'?",answer:"kuchnia",hint:"rzeczownik żeński"},
+  {type:"vocab",topic:"Dom",q:"Jak po polsku 'bathroom'?",answer:"łazienka",hint:"rzeczownik żeński"},
+  {type:"vocab",topic:"Dom",q:"Jak po polsku 'living room'?",answer:"salon",hint:"pokój dzienny"},
+  {type:"vocab",topic:"Czas wolny",q:"Jak po polsku 'cinema'?",answer:"kino",hint:"miejsce z filmami"},
+  {type:"vocab",topic:"Czas wolny",q:"Jak po polsku 'swimming pool'?",answer:"basen",hint:"do pływania"},
+  {type:"vocab",topic:"Jedzenie",q:"Jak po polsku 'bread'?",answer:"chleb",hint:"rzeczownik"},
+  {type:"vocab",topic:"Jedzenie",q:"Jak po polsku 'water'?",answer:"woda",hint:"rzeczownik żeński"},
+  {type:"vocab",topic:"Jedzenie",q:"Jak po polsku 'apple'?",answer:"jabłko",hint:"owoc"},
+  {type:"vocab",topic:"Miasto",q:"Jak po polsku 'shop'?",answer:"sklep",hint:"miejsce kupowania"},
+  {type:"vocab",topic:"Miasto",q:"Jak po polsku 'hospital'?",answer:"szpital",hint:"miejsce leczenia"},
+  {type:"vocab",topic:"Miasto",q:"Jak po polsku 'bus stop'?",answer:"przystanek autobusowy",hint:"dwa słowa"},
+  {type:"grammar",topic:"Gramatyka",q:"Odmień: ja ___ (być)",answer:"jestem",hint:"1. os. l. poj. czas teraźniejszy"},
+  {type:"grammar",topic:"Gramatyka",q:"Odmień: ty ___ (mieć)",answer:"masz",hint:"2. os. l. poj. czas teraźniejszy"},
+  {type:"grammar",topic:"Gramatyka",q:"Odmień: ona ___ (iść)",answer:"idzie",hint:"3. os. l. poj. czas teraźniejszy"},
+  {type:"grammar",topic:"Gramatyka",q:"Odmień: my ___ (mieszkać)",answer:"mieszkamy",hint:"1. os. l. mn. czas teraźniejszy"},
+  {type:"grammar",topic:"Gramatyka",q:"Odmień: oni ___ (mówić)",answer:"mówią",hint:"3. os. l. mn. czas teraźniejszy"},
+  {type:"translation",topic:"Tłumaczenie",q:"Przetłumacz na polski: 'I live in a house.'",answer:"Mieszkam w domu.",hint:"czas teraźniejszy"},
+  {type:"translation",topic:"Tłumaczenie",q:"Przetłumacz na polski: 'My name is Anna.'",answer:"Mam na imię Anna.",hint:"forma z 'mam na imię'"},
+  {type:"translation",topic:"Tłumaczenie",q:"Przetłumacz na polski: 'I like football.'",answer:"Lubię piłkę nożną.",hint:"czasownik + biernik"},
+  {type:"translation",topic:"Tłumaczenie",q:"Przetłumacz na angielski: 'Chodzę do szkoły codziennie.'",answer:"I go to school every day.",hint:"codziennie = every day"},
+  {type:"translation",topic:"Tłumaczenie",q:"Przetłumacz na angielski: 'Mam brata i siostrę.'",answer:"I have a brother and a sister.",hint:"liczba pojedyncza"},
+  {type:"mc",topic:"Gramatyka",q:"Który zaimek jest poprawny? 'To ___ moja mama.'",answer:"jest",options:["jest","jestem","jesteś","są"],hint:"3. os. l. poj."},
+  {type:"mc",topic:"Liczby",q:"Ile to po polsku? 15",answer:"piętnaście",options:["czternaście","piętnaście","szesnaście","siedemnaście"],hint:"10 + 5"},
+  {type:"mc",topic:"Kolory",q:"Jak po polsku 'red'?",answer:"czerwony",options:["niebieski","zielony","czerwony","żółty"],hint:"kolor ognia"},
+  {type:"mc",topic:"Czas wolny",q:"'Czytam' znaczy po angielsku:",answer:"I read / I am reading",options:["I write","I read / I am reading","I watch","I listen"],hint:"od czasownika 'czytać'"},
+  {type:"mc",topic:"Dni tygodnia",q:"Który dzień jest po 'poniedziałek'?",answer:"wtorek",options:["środa","wtorek","czwartek","piątek"],hint:"drugi dzień tygodnia"},
+  {type:"mc",topic:"Pory roku",q:"Jak po polsku 'summer'?",answer:"lato",options:["zima","wiosna","lato","jesień"],hint:"najcieplejsza pora roku"},
+],
+higher: [
+  {type:"vocab",topic:"Środowisko",q:"Jak po polsku 'climate change'?",answer:"zmiana klimatu",hint:"dwa słowa"},
+  {type:"vocab",topic:"Środowisko",q:"Jak po polsku 'recycling'?",answer:"recykling",hint:"podobne do angielskiego"},
+  {type:"vocab",topic:"Środowisko",q:"Jak po polsku 'pollution'?",answer:"zanieczyszczenie",hint:"skażenie środowiska"},
+  {type:"vocab",topic:"Zdrowie",q:"Jak po polsku 'healthy lifestyle'?",answer:"zdrowy styl życia",hint:"trzy słowa"},
+  {type:"vocab",topic:"Zdrowie",q:"Jak po polsku 'mental health'?",answer:"zdrowie psychiczne",hint:"dwa słowa"},
+  {type:"vocab",topic:"Praca",q:"Jak po polsku 'unemployment'?",answer:"bezrobocie",hint:"bez + praca"},
+  {type:"vocab",topic:"Praca",q:"Jak po polsku 'salary'?",answer:"pensja",hint:"wynagrodzenie"},
+  {type:"vocab",topic:"Technologia",q:"Jak po polsku 'social media'?",answer:"media społecznościowe",hint:"dwa słowa"},
+  {type:"vocab",topic:"Technologia",q:"Jak po polsku 'artificial intelligence'?",answer:"sztuczna inteligencja",hint:"dwa słowa"},
+  {type:"vocab",topic:"Podróże",q:"Jak po polsku 'airport'?",answer:"lotnisko",hint:"gdzie lądują samoloty"},
+  {type:"vocab",topic:"Edukacja",q:"Jak po polsku 'university'?",answer:"uniwersytet",hint:"wyższe wykształcenie"},
+  {type:"vocab",topic:"Edukacja",q:"Jak po polsku 'scholarship'?",answer:"stypendium",hint:"finansowe wsparcie dla studenta"},
+  {type:"grammar",topic:"Gramatyka",q:"Wstaw w czasie przeszłym: Ona ___ (kupić) nową sukienkę.",answer:"kupiła",hint:"rodzaj żeński, czas przeszły dokonany"},
+  {type:"grammar",topic:"Gramatyka",q:"Wstaw w czasie przyszłym: Jutro ja ___ (pojechać) do Warszawy.",answer:"pojadę",hint:"1. os. l. poj. czas przyszły dokonany"},
+  {type:"grammar",topic:"Gramatyka",q:"Użyj dopełniacza: Nie mam ___ (czas).",answer:"czasu",hint:"dopełniacz l. poj."},
+  {type:"grammar",topic:"Gramatyka",q:"Użyj narzędnika: Interesuję się ___ (muzyka).",answer:"muzyką",hint:"narzędnik l. poj. żeński"},
+  {type:"grammar",topic:"Gramatyka",q:"Zdanie warunkowe: Gdybym miał dużo pieniędzy, ___ (podróżować).",answer:"podróżowałbym",hint:"tryb warunkowy, rodzaj męski"},
+  {type:"grammar",topic:"Gramatyka",q:"Użyj celownika: Dałam prezent ___ (mama).",answer:"mamie",hint:"celownik l. poj. żeński"},
+  {type:"translation",topic:"Tłumaczenie",q:"Przetłumacz na polski: 'Although it was raining, we went for a walk.'",answer:"Chociaż padało, poszliśmy na spacer.",hint:"spójnik 'chociaż'"},
+  {type:"translation",topic:"Tłumaczenie",q:"Przetłumacz na polski: 'I would like to become a doctor in the future.'",answer:"W przyszłości chciałbym zostać lekarzem.",hint:"tryb warunkowy + narzędnik"},
+  {type:"translation",topic:"Tłumaczenie",q:"Przetłumacz na angielski: 'Moim zdaniem, ochrona środowiska jest niezwykle ważna.'",answer:"In my opinion, environmental protection is extremely important.",hint:"moim zdaniem = in my opinion"},
+  {type:"translation",topic:"Tłumaczenie",q:"Przetłumacz na polski: 'I have been learning Polish for five years.'",answer:"Uczę się polskiego od pięciu lat.",hint:"od + dopełniacz"},
+  {type:"translation",topic:"Tłumaczenie",q:"Przetłumacz na polski: 'It is important to protect the environment.'",answer:"Ważne jest, aby chronić środowisko.",hint:"'ważne jest' + bezokolicznik"},
+  {type:"mc",topic:"Gramatyka",q:"Który przypadek rządzi przyimkiem 'bez'?",answer:"dopełniacz",options:["mianownik","dopełniacz","celownik","narzędnik"],hint:"np. bez wody, bez czasu"},
+  {type:"mc",topic:"Środowisko",q:"'Globalne ocieplenie' po angielsku to:",answer:"global warming",options:["climate change","global warming","air pollution","greenhouse effect"],hint:"ocieplenie = warming"},
+  {type:"mc",topic:"Gramatyka",q:"Poprawna forma: 'Rozmawiałem ___ przyjacielem.'",answer:"z",options:["do","z","od","dla"],hint:"narzędnik wymaga przyimka..."},
+  {type:"mc",topic:"Zdrowie",q:"'Otyłość' po angielsku to:",answer:"obesity",options:["diabetes","obesity","allergy","depression"],hint:"nadmierna waga ciała"},
+  {type:"mc",topic:"Gramatyka",q:"'Piszę' to czas:",answer:"teraźniejszy",options:["przeszły","teraźniejszy","przyszły","warunkowy"],hint:"dzieje się teraz"},
+]
+};
+
+let level = "foundation";
+let activeTypes = ["vocab","grammar","translation","mc"];
+let questions = [];
+let current = 0;
+let correct = 0;
+let wrong = 0;
+let answered = false;
+
+const typeLabels = {vocab:"Słownictwo", grammar:"Gramatyka", translation:"Tłumaczenie", mc:"Wielokrotny wybór"};
+const typeKeys = ["vocab","grammar","translation","mc"];
+
+function buildFilters() {
+  const row = document.getElementById("filter-row");
+  row.innerHTML = "";
+  typeKeys.forEach(t => {
+    const chip = document.createElement("button");
+    chip.className = "filter-chip" + (activeTypes.includes(t) ? " active" : "");
+    chip.textContent = typeLabels[t];
+    chip.onclick = () => toggleType(t, chip);
+    row.appendChild(chip);
+  });
+}
+
+function toggleType(t, chip) {
+  if (activeTypes.includes(t)) {
+    if (activeTypes.length === 1) return;
+    activeTypes = activeTypes.filter(x => x !== t);
+    chip.classList.remove("active");
+  } else {
+    activeTypes.push(t);
+    chip.classList.add("active");
+  }
+  restartQuiz();
+}
+
+function setLevel(l) {
+  level = l;
+  document.getElementById("btn-foundation").classList.toggle("active", l === "foundation");
+  document.getElementById("btn-higher").classList.toggle("active", l === "higher");
+  restartQuiz();
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function restartQuiz() {
+  current = 0; correct = 0; wrong = 0; answered = false;
+  const pool = DB[level].filter(q => activeTypes.includes(q.type));
+  questions = shuffle(pool);
+  document.getElementById("results-area").classList.add("hidden");
+  document.getElementById("quiz-area").classList.remove("hidden");
+  updateStats();
+  renderQuestion();
+}
+
+function normalize(s) {
+  return s.trim().toLowerCase().replace(/[.!?,]/g, "");
+}
+
+function levenshtein(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array.from({length: m+1}, (_, i) => [i]);
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++)
+    for (let j = 1; j <= n; j++)
+      dp[i][j] = a[i-1] === b[j-1] ? dp[i-1][j-1] : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+  return dp[m][n];
+}
+
+function diffHighlight(user, correct) {
+  const c = correct.trim();
+  let html = "";
+  let ci = 0, ui = 0;
+  const u = user.trim();
+  while (ci < c.length || ui < u.length) {
+    if (ci < c.length && ui < u.length && c[ci].toLowerCase() === u[ui].toLowerCase()) {
+      html += c[ci]; ci++; ui++;
+    } else {
+      html += '<span class="diff-missing">' + (c[ci] || "") + '</span>';
+      ci++; if (ui < u.length) ui++;
+    }
+  }
+  return html;
+}
+
+function renderQuestion() {
+  if (current >= questions.length) { showResults(); return; }
+  answered = false;
+  const q = questions[current];
+  updateStats();
+  document.getElementById("progress").style.width = ((current / questions.length) * 100) + "%";
+
+  let inputHTML = "";
+  if (q.type === "mc") {
+    const opts = shuffle(q.options);
+    inputHTML = '<div class="mc-options">' + opts.map(o =>
+      `<button class="mc-btn" onclick="checkMC(this,'${o.replace(/'/g,"\\'")}','${q.answer.replace(/'/g,"\\'")}')">` + o + `</button>`
+    ).join("") + '</div>';
+  } else {
+    inputHTML = `<textarea class="answer-input" id="ans-input" placeholder="Wpisz odpowiedź..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitAnswer();}"></textarea>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="submitAnswer()">Sprawdź</button>
+      <button class="btn" onclick="skipQuestion()">Pomiń</button>
+    </div>`;
+  }
+
+  document.getElementById("quiz-area").innerHTML = `
+    <div class="question-card">
+      <div class="q-meta">
+        <span class="badge badge-level">${level === "foundation" ? "Foundation" : "Higher"}</span>
+        <span class="badge badge-type">${typeLabels[q.type]}</span>
+        <span class="badge badge-topic">${q.topic}</span>
+      </div>
+      <p class="q-text">${q.q}</p>
+      <p class="q-hint">💡 Wskazówka: <span>${q.hint}</span></p>
+      ${inputHTML}
+      <div id="feedback"></div>
+    </div>
+    <div class="btn-row" id="nav-btn" style="display:none">
+      <button class="btn btn-primary" onclick="nextQuestion()">Następne pytanie →</button>
+    </div>
+  `;
+  if (q.type !== "mc") {
+    setTimeout(() => { const i = document.getElementById("ans-input"); if(i) i.focus(); }, 80);
+  }
+}
+
+function checkMC(btn, chosen, correctAns) {
+  if (answered) return;
+  answered = true;
+  btn.parentElement.querySelectorAll(".mc-btn").forEach(b => {
+    b.disabled = true;
+    if (b.textContent.trim() === correctAns) b.classList.add("correct");
+    else if (b.textContent.trim() === chosen && chosen !== correctAns) b.classList.add("incorrect");
+  });
+  const fb = document.getElementById("feedback");
+  if (chosen === correctAns) {
+    correct++;
+    fb.innerHTML = '<div class="feedback correct">✓ Doskonale! Poprawna odpowiedź.</div>';
+  } else {
+    wrong++;
+    fb.innerHTML = `<div class="feedback incorrect">✗ Błąd. Poprawna odpowiedź: <strong>${correctAns}</strong></div>`;
+  }
+  document.getElementById("nav-btn").style.display = "flex";
+  updateStats();
+}
+
+function submitAnswer() {
+  if (answered) return;
+  const inp = document.getElementById("ans-input");
+  if (!inp || !inp.value.trim()) return;
+  answered = true;
+  inp.disabled = true;
+  const q = questions[current];
+  const user = inp.value;
+  const isCorrect = normalize(user) === normalize(q.answer);
+  const isClose = !isCorrect && levenshtein(normalize(user), normalize(q.answer)) <= 2;
+  const fb = document.getElementById("feedback");
+  if (isCorrect) {
+    correct++;
+    fb.innerHTML = `<div class="feedback correct">✓ Doskonale! Poprawna odpowiedź.</div>`;
+  } else if (isClose) {
+    wrong++;
+    fb.innerHTML = `<div class="feedback partial">⚠ Prawie! Mały błąd ortograficzny lub brakujący znak diakrytyczny.<div class="correct-answer">Twoja odpowiedź: <em>${user}</em><br>Poprawna: <strong>${diffHighlight(user, q.answer)}</strong></div></div>`;
+  } else {
+    wrong++;
+    fb.innerHTML = `<div class="feedback incorrect">✗ Błąd.<div class="correct-answer">Twoja odpowiedź: <em>${user}</em><br>Poprawna: <strong>${q.answer}</strong></div></div>`;
+  }
+  document.getElementById("nav-btn").style.display = "flex";
+  updateStats();
+}
+
+function skipQuestion() {
+  if (answered) return;
+  answered = true;
+  wrong++;
+  const q = questions[current];
+  document.getElementById("feedback").innerHTML = `<div class="feedback partial">→ Pominięto. Poprawna odpowiedź: <strong>${q.answer}</strong></div>`;
+  document.getElementById("nav-btn").style.display = "flex";
+  updateStats();
+}
+
+function nextQuestion() { current++; renderQuestion(); }
+
+function updateStats() {
+  const total = correct + wrong;
+  document.getElementById("stat-q").textContent = (current < questions.length ? current + 1 : questions.length) + "/" + questions.length;
+  document.getElementById("stat-correct").textContent = correct;
+  document.getElementById("stat-wrong").textContent = wrong;
+  document.getElementById("stat-pct").textContent = total > 0 ? Math.round((correct/total)*100) + "%" : "—";
+}
+
+function showResults() {
+  document.getElementById("quiz-area").classList.add("hidden");
+  document.getElementById("progress").style.width = "100%";
+  const total = correct + wrong;
+  const pct = total > 0 ? Math.round((correct/total)*100) : 0;
+  const msg = pct >= 80 ? "Świetny wynik! Jesteś dobrze przygotowany/a do egzaminu." : pct >= 60 ? "Dobry wynik! Warto powtórzyć trudniejsze tematy." : "Ćwicz dalej — powtórz materiał i spróbuj jeszcze raz.";
+  const grade = pct >= 80 ? "9–7" : pct >= 60 ? "6–5" : pct >= 40 ? "4–3" : "2–1";
+  const scoreColor = pct >= 80 ? "var(--green)" : pct >= 60 ? "var(--warn)" : "var(--accent)";
+  document.getElementById("results-area").innerHTML = `
+    <div class="results-card">
+      <div class="results-score" style="color:${scoreColor}">${pct}%</div>
+      <div class="results-label">${msg}</div>
+      <div class="results-breakdown">
+        <div class="stat"><div class="stat-val" style="color:var(--green)">${correct}</div><div class="stat-lbl">poprawne</div></div>
+        <div class="stat"><div class="stat-val" style="color:var(--accent)">${wrong}</div><div class="stat-lbl">błędy</div></div>
+        <div class="stat"><div class="stat-val">${grade}</div><div class="stat-lbl">ocena GCSE</div></div>
+      </div>
+      <div class="btn-row" style="justify-content:center; gap:10px;">
+        <button class="btn btn-primary" onclick="restartQuiz()">Zacznij ponownie</button>
+        <button class="btn" onclick="setLevel(level==='foundation'?'higher':'foundation')">Zmień poziom</button>
+      </div>
+    </div>
+  `;
+  document.getElementById("results-area").classList.remove("hidden");
+}
+
+buildFilters();
+restartQuiz();
+</script>
+</body>
+</html>
