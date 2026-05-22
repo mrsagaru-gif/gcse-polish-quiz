@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz GCSE — Język Polski · Test 2</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f7f5f0;
+  --surface: #ffffff;
+  --surface2: #f0ede8;
+  --border: #e0dbd4;
+  --text: #1a1714;
+  --text2: #6b635c;
+  --text3: #9c9089;
+  --accent: #1a5c8a;
+  --accent-bg: #e8f2f9;
+  --accent-hover: #154a72;
+  --green: #1a6b3c;
+  --green-bg: #ebf5f0;
+  --red: #b83030;
+  --red-bg: #fdf0f0;
+  --warn: #8a5c00;
+  --warn-bg: #fff8eb;
+  --purple: #5a3a8a;
+  --purple-bg: #f2edfb;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --font: 'DM Sans', sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+.container { max-width: 700px; margin: 0 auto; padding: 2rem 1rem; }
+
+/* NAV TABS */
+.nav-tabs { display: flex; gap: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 4px; margin-bottom: 1.5rem; }
+.nav-tab { flex: 1; padding: 8px 12px; border: none; border-radius: var(--radius); font-family: var(--font); font-size: 13px; font-weight: 500; cursor: pointer; background: transparent; color: var(--text2); transition: all 0.15s; text-align: center; }
+.nav-tab.active { background: var(--accent); color: white; }
+.nav-tab:hover:not(.active) { background: var(--surface2); }
+
+/* HEADER */
+.header { margin-bottom: 1.5rem; display: flex; align-items: center; gap: 12px; }
+.logo-mark { width: 40px; height: 40px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 13px; font-family: var(--mono); flex-shrink: 0; }
+.header-text h1 { font-size: 20px; font-weight: 600; }
+.header-text p { font-size: 13px; color: var(--text2); margin-top: 2px; }
+.tag2 { display: inline-block; background: var(--purple-bg); color: var(--purple); font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; margin-left: 8px; vertical-align: middle; }
+
+/* LEVEL + FILTERS */
+.level-selector { display: flex; gap: 6px; margin-bottom: 1rem; background: var(--surface2); padding: 4px; border-radius: var(--radius); width: fit-content; }
+.level-btn { padding: 7px 20px; border: none; border-radius: 7px; font-family: var(--font); font-size: 14px; font-weight: 500; cursor: pointer; background: transparent; color: var(--text2); transition: all 0.15s; }
+.level-btn.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
+.filter-chip { padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface); color: var(--text2); font-size: 12px; font-family: var(--font); font-weight: 500; cursor: pointer; transition: all 0.15s; }
+.filter-chip.active { background: var(--green-bg); color: var(--green); border-color: #a8d4bc; }
+
+/* PROGRESS + STATS */
+.progress-wrap { background: var(--surface2); border-radius: 4px; height: 4px; margin-bottom: 1rem; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.4s ease; }
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 1.25rem; }
+.stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; text-align: center; }
+.stat-val { font-size: 20px; font-weight: 600; color: var(--text); font-family: var(--mono); }
+.stat-lbl { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+/* QUESTION CARD */
+.question-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem; }
+.q-meta { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+.badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.02em; text-transform: uppercase; }
+.badge-level { background: var(--accent-bg); color: var(--accent); }
+.badge-type { background: var(--purple-bg); color: var(--purple); }
+.badge-topic { background: var(--surface2); color: var(--text2); }
+.q-text { font-size: 17px; font-weight: 500; color: var(--text); line-height: 1.5; margin-bottom: 6px; }
+.q-hint { font-size: 13px; color: var(--text3); margin-bottom: 14px; }
+.q-hint span { color: var(--text2); }
+
+/* LISTEN BUTTON */
+.listen-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); font-size: 13px; font-family: var(--font); color: var(--text2); cursor: pointer; margin-bottom: 12px; transition: all 0.15s; }
+.listen-btn:hover { background: var(--surface2); }
+.listen-btn.playing { background: var(--accent-bg); color: var(--accent); border-color: #a8c8e0; }
+
+/* INPUTS */
+textarea.answer-input { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 15px; font-family: var(--font); color: var(--text); background: var(--bg); resize: vertical; min-height: 60px; outline: none; transition: border-color 0.15s; }
+textarea.answer-input:focus { border-color: var(--accent); }
+.btn-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.btn { padding: 9px 18px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px; font-family: var(--font); font-weight: 500; cursor: pointer; background: var(--surface); color: var(--text); transition: all 0.15s; }
+.btn:hover { background: var(--surface2); }
+.btn-primary { background: var(--accent); color: white; border-color: transparent; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-sm { padding: 6px 12px; font-size: 13px; }
+
+/* FEEDBACK */
+.feedback { margin-top: 14px; padding: 12px 14px; border-radius: var(--radius); font-size: 14px; line-height: 1.6; }
+.feedback.correct { background: var(--green-bg); color: var(--green); border: 1px solid #a8d4bc; }
+.feedback.incorrect { background: var(--red-bg); color: var(--red); border: 1px solid #f0b8b8; }
+.feedback.partial { background: var(--warn-bg); color: var(--warn); border: 1px solid #f0d898; }
+.correct-answer { margin-top: 8px; font-size: 13px; opacity: 0.85; }
+.diff-missing { font-weight: 600; background: rgba(184,48,48,0.12); border-bottom: 2px solid var(--red); border-radius: 2px; }
+
+/* MC */
+.mc-options { display: grid; gap: 8px; margin-top: 10px; }
+.mc-btn { padding: 11px 14px; border: 1px solid var(--border); border-radius: var(--radius); text-align: left; cursor: pointer; background: var(--surface); color: var(--text); font-size: 14px; font-family: var(--font); transition: all 0.15s; }
+.mc-btn:hover:not(:disabled) { background: var(--surface2); }
+.mc-btn.correct { background: var(--green-bg); color: var(--green); border-color: #a8d4bc; font-weight: 500; }
+.mc-btn.incorrect { background: var(--red-bg); color: var(--red); border-color: #f0b8b8; }
+.mc-btn:disabled { cursor: default; }
+
+/* WRITING PROMPTS */
+.writing-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem; }
+.writing-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+.writing-prompt { font-size: 16px; font-weight: 500; color: var(--text); line-height: 1.5; margin-bottom: 6px; }
+.writing-meta { font-size: 13px; color: var(--text2); margin-bottom: 14px; }
+textarea.writing-input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 15px; font-family: var(--font); color: var(--text); background: var(--bg); resize: vertical; min-height: 120px; outline: none; transition: border-color 0.15s; }
+textarea.writing-input:focus { border-color: var(--accent); }
+.word-count { font-size: 12px; color: var(--text3); text-align: right; margin-top: 4px; }
+.model-answer { margin-top: 14px; padding: 14px; background: var(--surface2); border-radius: var(--radius); border-left: 3px solid var(--accent); }
+.model-answer h4 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); margin-bottom: 8px; }
+.model-answer p { font-size: 14px; color: var(--text); line-height: 1.7; }
+.key-phrases { margin-top: 10px; }
+.key-phrases h4 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--green); margin-bottom: 6px; }
+.phrase-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.phrase { background: var(--green-bg); color: var(--green); font-size: 12px; padding: 3px 10px; border-radius: 12px; font-weight: 500; }
+.writing-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.writing-counter { font-size: 13px; color: var(--text2); }
+
+/* HISTORY */
+.history-empty { text-align: center; padding: 3rem 1rem; color: var(--text3); }
+.history-empty p { font-size: 15px; margin-bottom: 8px; }
+.session-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 10px; }
+.session-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.session-date { font-size: 13px; color: var(--text2); }
+.session-score { font-size: 22px; font-weight: 600; font-family: var(--mono); }
+.session-bars { display: grid; gap: 6px; }
+.topic-bar-row { display: flex; align-items: center; gap: 8px; }
+.topic-bar-label { font-size: 12px; color: var(--text2); width: 120px; flex-shrink: 0; }
+.topic-bar-wrap { flex: 1; background: var(--surface2); border-radius: 3px; height: 6px; }
+.topic-bar-fill { height: 100%; border-radius: 3px; background: var(--accent); }
+.topic-bar-pct { font-size: 12px; color: var(--text2); font-family: var(--mono); width: 32px; text-align: right; flex-shrink: 0; }
+.clear-btn { font-size: 12px; color: var(--red); background: none; border: none; cursor: pointer; font-family: var(--font); padding: 4px 8px; border-radius: 6px; }
+.clear-btn:hover { background: var(--red-bg); }
+
+/* RESULTS */
+.results-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2.5rem; text-align: center; }
+.results-score { font-size: 56px; font-weight: 600; font-family: var(--mono); }
+.results-label { font-size: 16px; color: var(--text2); margin: 8px 0 1.75rem; }
+.results-breakdown { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 1.75rem; }
+
+/* PRINT */
+@media print {
+  .nav-tabs, .level-selector, .filter-row, .progress-wrap, .stats-row, .btn-row, .btn, .listen-btn, #nav-btn, .writing-nav .btn, .no-print { display: none !important; }
+  body { background: white; padding: 0; }
+  .container { padding: 0; max-width: 100%; }
+  .question-card, .writing-card { border: 1px solid #ccc; break-inside: avoid; margin-bottom: 12px; }
+  .print-header { display: block !important; }
+  .model-answer { display: none; }
+  .feedback { display: none; }
+  .answer-input, .writing-input { border: 1px solid #999; min-height: 40px; background: white; }
+}
+.print-header { display: none; text-align: center; margin-bottom: 1.5rem; }
+.print-header h2 { font-size: 20px; font-weight: 600; }
+.print-header p { font-size: 13px; color: #666; margin-top: 4px; }
+.print-answer-line { display: none; border-bottom: 1px solid #ccc; margin: 8px 0; height: 28px; }
+
+.hidden { display: none; }
+.section { display: none; }
+.section.active { display: block; }
+
+@media (max-width: 480px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .results-breakdown { grid-template-columns: 1fr 1fr; }
+  .nav-tab { font-size: 11px; padding: 7px 6px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="print-header">
+  <h2>Quiz GCSE — Język Polski · Test 2</h2>
+  <p>Imię i nazwisko: _________________________ &nbsp;&nbsp; Data: _____________ &nbsp;&nbsp; Poziom: _____________</p>
+</div>
+
+<div class="header no-print">
+  <div class="logo-mark">PL</div>
+  <div class="header-text">
+    <h1>Quiz GCSE — Język Polski <span class="tag2">Test 2</span></h1>
+    <p>AQA / Edexcel / OCR · Foundation & Higher</p>
+  </div>
+</div>
+
+<div class="nav-tabs no-print">
+  <button class="nav-tab active" onclick="showSection('quiz')">🧠 Quiz</button>
+  <button class="nav-tab" onclick="showSection('writing')">✍️ Wypracowania</button>
+  <button class="nav-tab" onclick="showSection('history')">📊 Historia</button>
+  <button class="nav-tab" onclick="printWorksheet()">🖨️ Drukuj</button>
+</div>
+
+<!-- QUIZ SECTION -->
+<div id="section-quiz" class="section active">
+  <div class="level-selector">
+    <button class="level-btn active" onclick="setLevel('foundation')" id="btn-foundation">Foundation</button>
+    <button class="level-btn" onclick="setLevel('higher')" id="btn-higher">Higher</button>
+  </div>
+  <div class="filter-row" id="filter-row"></div>
+  <div class="progress-wrap"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-val" id="stat-q">—</div><div class="stat-lbl">pytanie</div></div>
+    <div class="stat"><div class="stat-val" id="stat-correct">0</div><div class="stat-lbl">poprawne</div></div>
+    <div class="stat"><div class="stat-val" id="stat-wrong">0</div><div class="stat-lbl">błędy</div></div>
+    <div class="stat"><div class="stat-val" id="stat-pct">—</div><div class="stat-lbl">wynik</div></div>
+  </div>
+  <div id="quiz-area"></div>
+  <div id="results-area" class="hidden"></div>
+</div>
+
+<!-- WRITING SECTION -->
+<div id="section-writing" class="section">
+  <div class="writing-nav">
+    <div class="writing-counter" id="writing-counter">Zadanie 1 / 12</div>
+    <div class="btn-row" style="margin-top:0">
+      <button class="btn btn-sm" onclick="prevWriting()">← Poprzednie</button>
+      <button class="btn btn-sm" onclick="nextWriting()">Następne →</button>
+    </div>
+  </div>
+  <div id="writing-area"></div>
+</div>
+
+<!-- HISTORY SECTION -->
+<div id="section-history" class="section">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+    <h2 style="font-size:18px; font-weight:600;">Historia wyników</h2>
+    <button class="clear-btn" onclick="clearHistory()">Wyczyść historię</button>
+  </div>
+  <div id="history-area"></div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ==================== DATA ====================
+const DB = {
+foundation: [
+  // HOLIDAYS & TRAVEL
+  {type:"vocab",topic:"Podróże",q:"Jak po polsku 'holiday'?",answer:"wakacje",hint:"czas wolny od szkoły"},
+  {type:"vocab",topic:"Podróże",q:"Jak po polsku 'suitcase'?",answer:"walizka",hint:"bagaż podróżny"},
+  {type:"vocab",topic:"Podróże",q:"Jak po polsku 'beach'?",answer:"plaża",hint:"nad morzem"},
+  {type:"vocab",topic:"Podróże",q:"Jak po polsku 'hotel'?",answer:"hotel",hint:"podobne do angielskiego"},
+  {type:"vocab",topic:"Podróże",q:"Jak po polsku 'passport'?",answer:"paszport",hint:"dokument podróży"},
+  {type:"translation",topic:"Podróże",q:"Przetłumacz: 'Last summer I went to Spain.'",answer:"Ostatnie lato pojechałam/pojechałem do Hiszpanii.",hint:"czas przeszły + kraj"},
+  {type:"mc",topic:"Podróże",q:"'Samolot' po angielsku to:",answer:"aeroplane",options:["train","aeroplane","bus","ship"],hint:"lata po niebie"},
+  // ENVIRONMENT
+  {type:"vocab",topic:"Środowisko",q:"Jak po polsku 'forest'?",answer:"las",hint:"drzewa"},
+  {type:"vocab",topic:"Środowisko",q:"Jak po polsku 'river'?",answer:"rzeka",hint:"płynie do morza"},
+  {type:"translation",topic:"Środowisko",q:"Przetłumacz: 'We should protect nature.'",answer:"Powinniśmy chronić przyrodę.",hint:"powinniśmy + bezokolicznik"},
+  {type:"mc",topic:"Środowisko",q:"'Śmieci' po angielsku to:",answer:"rubbish / waste",options:["recycling","rubbish / waste","pollution","energy"],hint:"to co wyrzucamy"},
+  // WORK
+  {type:"vocab",topic:"Praca",q:"Jak po polsku 'doctor'?",answer:"lekarz",hint:"pracuje w szpitalu"},
+  {type:"vocab",topic:"Praca",q:"Jak po polsku 'nurse'?",answer:"pielęgniarka",hint:"pomaga lekarzowi"},
+  {type:"translation",topic:"Praca",q:"Przetłumacz: 'I want to be a teacher.'",answer:"Chcę być nauczycielem/nauczycielką.",hint:"chcę + bezokolicznik"},
+  {type:"mc",topic:"Praca",q:"'Pracuję' po angielsku to:",answer:"I work",options:["I study","I work","I earn","I travel"],hint:"od 'pracować'"},
+  // RELATIONSHIPS
+  {type:"vocab",topic:"Relacje",q:"Jak po polsku 'friend'?",answer:"przyjaciel / przyjaciółka",hint:"bliski znajomy"},
+  {type:"vocab",topic:"Relacje",q:"Jak po polsku 'boyfriend'?",answer:"chłopak",hint:"partner romantyczny"},
+  {type:"mc",topic:"Relacje",q:"'Lubię' po angielsku to:",answer:"I like",options:["I love","I like","I hate","I miss"],hint:"umiarkowane uczucie pozytywne"},
+  // TECHNOLOGY
+  {type:"vocab",topic:"Technologia",q:"Jak po polsku 'mobile phone'?",answer:"telefon komórkowy",hint:"dwa słowa"},
+  {type:"vocab",topic:"Technologia",q:"Jak po polsku 'internet'?",answer:"internet",hint:"sieć globalna"},
+  {type:"mc",topic:"Technologia",q:"'Komputer' to po angielsku:",answer:"computer",options:["tablet","computer","screen","keyboard"],hint:"główne urządzenie"},
+  // HEALTH
+  {type:"vocab",topic:"Zdrowie",q:"Jak po polsku 'headache'?",answer:"ból głowy",hint:"dwa słowa"},
+  {type:"vocab",topic:"Zdrowie",q:"Jak po polsku 'medicine'?",answer:"lekarstwo",hint:"tabletki od lekarza"},
+  {type:"translation",topic:"Zdrowie",q:"Przetłumacz: 'I feel ill today.'",answer:"Dzisiaj czuję się chory/chora.",hint:"czuć się + przymiotnik"},
+  {type:"mc",topic:"Zdrowie",q:"'Zdrowy' po angielsku to:",answer:"healthy",options:["sick","tired","healthy","weak"],hint:"przeciwieństwo chorego"},
+],
+higher: [
+  // HOLIDAYS & TRAVEL
+  {type:"vocab",topic:"Podróże",q:"Jak po polsku 'package holiday'?",answer:"wakacje all-inclusive / wycieczka zorganizowana",hint:"wszystko w cenie"},
+  {type:"translation",topic:"Podróże",q:"Przetłumacz: 'If I had more money, I would travel around the world.'",answer:"Gdybym miał/miała więcej pieniędzy, podróżowałbym/podróżowałabym dookoła świata.",hint:"tryb warunkowy"},
+  {type:"grammar",topic:"Podróże",q:"Użyj właściwej formy: 'Byłam ___ (Francja) dwa razy.'",answer:"we Francji",hint:"miejscownik + przyimek 'we'"},
+  {type:"mc",topic:"Podróże",q:"'Zrównoważona turystyka' po angielsku to:",answer:"sustainable tourism",options:["eco-tourism","sustainable tourism","budget travel","backpacking"],hint:"zrównoważona = sustainable"},
+  // ENVIRONMENT
+  {type:"vocab",topic:"Środowisko",q:"Jak po polsku 'greenhouse effect'?",answer:"efekt cieplarniany",hint:"dwa słowa"},
+  {type:"translation",topic:"Środowisko",q:"Przetłumacz: 'Deforestation is one of the biggest threats to biodiversity.'",answer:"Wylesianie jest jednym z największych zagrożeń dla bioróżnorodności.",hint:"złożone zdanie"},
+  {type:"grammar",topic:"Środowisko",q:"Użyj trybu warunkowego: 'Gdybyśmy ___ (używać) mniej plastiku, środowisko byłoby czystsze.'",answer:"używali",hint:"3. os. l. mn. tryb warunkowy"},
+  {type:"mc",topic:"Środowisko",q:"'Odnawialne źródła energii' po angielsku to:",answer:"renewable energy sources",options:["nuclear power","fossil fuels","renewable energy sources","carbon emissions"],hint:"odnawialne = renewable"},
+  // WORK
+  {type:"vocab",topic:"Praca",q:"Jak po polsku 'work experience'?",answer:"praktyki zawodowe",hint:"dwa słowa"},
+  {type:"translation",topic:"Praca",q:"Przetłumacz: 'In the future, I would like to work in medicine.'",answer:"W przyszłości chciałbym/chciałabym pracować w medycynie.",hint:"tryb warunkowy + miejscownik"},
+  {type:"grammar",topic:"Praca",q:"Dopełniacz: 'Szukam ___ (praca).'",answer:"pracy",hint:"dopełniacz l. poj. żeński"},
+  {type:"mc",topic:"Praca",q:"'Samozatrudnienie' po angielsku to:",answer:"self-employment",options:["unemployment","retirement","self-employment","internship"],hint:"sam dla siebie"},
+  // RELATIONSHIPS
+  {type:"vocab",topic:"Relacje",q:"Jak po polsku 'peer pressure'?",answer:"presja rówieśnicza",hint:"dwa słowa"},
+  {type:"translation",topic:"Relacje",q:"Przetłumacz: 'Maintaining a healthy relationship requires trust and communication.'",answer:"Utrzymanie zdrowego związku wymaga zaufania i komunikacji.",hint:"złożone zdanie"},
+  {type:"grammar",topic:"Relacje",q:"Narzędnik: 'Rozmawiałam ___ (mój najlepszy przyjaciel).'",answer:"z moim najlepszym przyjacielem",hint:"narzędnik + przyimek 'z'"},
+  {type:"mc",topic:"Relacje",q:"'Wzajemny szacunek' po angielsku to:",answer:"mutual respect",options:["unconditional love","mutual respect","social pressure","peer influence"],hint:"wzajemny = mutual"},
+  // TECHNOLOGY
+  {type:"vocab",topic:"Technologia",q:"Jak po polsku 'cyberbullying'?",answer:"cyberprzemoc",hint:"jedno słowo"},
+  {type:"translation",topic:"Technologia",q:"Przetłumacz: 'Technology has both advantages and disadvantages.'",answer:"Technologia ma zarówno zalety, jak i wady.",hint:"zarówno...jak i = both...and"},
+  {type:"grammar",topic:"Technologia",q:"Użyj strony biernej: 'Nowe oprogramowanie ___ (zainstalować) wczoraj.'",answer:"zostało zainstalowane",hint:"strona bierna czasu przeszłego"},
+  {type:"mc",topic:"Technologia",q:"'Prywatność danych' po angielsku to:",answer:"data privacy",options:["data privacy","digital divide","screen time","cloud storage"],hint:"prywatność = privacy"},
+  // HEALTH
+  {type:"vocab",topic:"Zdrowie",q:"Jak po polsku 'addiction'?",answer:"uzależnienie",hint:"nałóg"},
+  {type:"translation",topic:"Zdrowie",q:"Przetłumacz: 'A balanced diet is essential for good health.'",answer:"Zbilansowana dieta jest niezbędna dla dobrego zdrowia.",hint:"niezbędna = essential"},
+  {type:"grammar",topic:"Zdrowie",q:"Celownik: 'To jest szkodliwe ___ (zdrowie).'",answer:"dla zdrowia",hint:"dla + dopełniacz"},
+  {type:"mc",topic:"Zdrowie",q:"'Zaburzenia odżywiania' po angielsku to:",answer:"eating disorders",options:["food allergy","eating disorders","malnutrition","food poisoning"],hint:"zaburzenia = disorders"},
+]
+};
+
+const WRITING_PROMPTS = [
+  {
+    level: "foundation",
+    topic: "Podróże",
+    title: "Moje ulubione wakacje",
+    prompt: "Opisz swoje ulubione wakacje. Napisz o tym: dokąd pojechałeś/pojechałaś, z kim, co robiłeś/robiłaś i czy chciałbyś/chciałabyś tam wrócić. (ok. 80–90 słów)",
+    target: 80,
+    model: "W zeszłym roku pojechałam z rodziną do Włoch. Spędziliśmy dwa tygodnie nad morzem w małym miasteczku na południu kraju. Codziennie pływaliśmy i opalaliśmy się na plaży. Wieczorami jedliśmy pyszną pizzę i lody. Zwiedziłam też stare miasto i kościoły. Było bardzo gorąco, ale bardzo mi się podobało. Chciałabym tam wrócić, ponieważ Włochy są piękne i ludzie są bardzo mili. W przyszłym roku chcę pojechać do Rzymu.",
+    phrases: ["w zeszłym roku", "spędziliśmy", "codziennie", "wieczorami", "chciałabym wrócić", "ponieważ"]
+  },
+  {
+    level: "foundation",
+    topic: "Zdrowie",
+    title: "Zdrowy styl życia",
+    prompt: "Napisz o tym, jak dbasz o swoje zdrowie. Wspomnij o: jedzeniu, aktywności fizycznej, śnie i jednej zmianie którą chciałbyś/chciałabyś wprowadzić. (ok. 80–90 słów)",
+    target: 80,
+    model: "Staram się żyć zdrowo. Każdego dnia jem dużo owoców i warzyw i unikam fast foodów. Trzy razy w tygodniu chodzę na basen lub jeżdżę na rowerze. Staram się spać co najmniej osiem godzin każdej nocy, bo sen jest bardzo ważny. Nie palę papierosów i rzadko piję słodkie napoje. Chciałbym jednak jeść mniej słodyczy, bo to jest mój największy problem. W przyszłości chcę zacząć biegać.",
+    phrases: ["staram się", "każdego dnia", "unikam", "trzy razy w tygodniu", "co najmniej", "chciałbym jednak"]
+  },
+  {
+    level: "foundation",
+    topic: "Technologia",
+    title: "Media społecznościowe",
+    prompt: "Napisz o swoim stosunku do mediów społecznościowych. Opisz: jakich platform używasz, jak długo, jakie są zalety i jedna wada. (ok. 80–90 słów)",
+    target: 80,
+    model: "Używam mediów społecznościowych codziennie. Najbardziej lubię Instagram i YouTube, gdzie oglądam filmy i zdjęcia znajomych. Spędzam tam około dwóch godzin dziennie. Uważam, że media społecznościowe mają wiele zalet — można rozmawiać z przyjaciółmi i dowiedzieć się o najnowszych wydarzeniach. Jednak największą wadą jest to, że można stracić dużo czasu i przestać robić ważne rzeczy. Moi rodzice uważają, że spędzam za dużo czasu przed ekranem.",
+    phrases: ["codziennie", "około", "uważam, że", "mają wiele zalet", "jednak", "największą wadą jest"]
+  },
+  {
+    level: "foundation",
+    topic: "Relacje",
+    title: "Mój najlepszy przyjaciel",
+    prompt: "Opisz swojego najlepszego przyjaciela lub przyjaciółkę. Napisz o: wyglądzie, charakterze, jak długo się znacie i co lubicie razem robić. (ok. 80–90 słów)",
+    target: 80,
+    model: "Moja najlepsza przyjaciółka ma na imię Kasia. Znamy się od pięciu lat, od kiedy razem zaczęłyśmy chodzić do szkoły. Jest wysoka i szczupła, ma długie blond włosy i niebieskie oczy. Jest bardzo wesoła, miła i zawsze mi pomaga, gdy mam problemy. Razem chodzimy na zakupy, oglądamy filmy i rozmawiamy o wszystkim. Kasia jest bardzo mądra i zawsze dostaje dobre oceny. Nie wiem, co bym bez niej zrobiła!",
+    phrases: ["znamy się od", "od kiedy", "jest bardzo", "zawsze mi pomaga", "razem", "nie wiem co bym zrobiła"]
+  },
+  {
+    level: "higher",
+    topic: "Środowisko",
+    title: "Ochrona środowiska — obowiązek czy wybór?",
+    prompt: "Napisz esej na temat: czy ochrona środowiska powinna być obowiązkiem prawnym czy indywidualnym wyborem? Przedstaw argumenty za i przeciw oraz własną opinię. (ok. 150 słów)",
+    target: 150,
+    model: "Ochrona środowiska jest jednym z najważniejszych wyzwań naszych czasów. Istnieją dwa główne podejścia do tego problemu: regulacje prawne lub indywidualna odpowiedzialność. Z jednej strony, przepisy prawne zapewniają, że wszyscy — zarówno obywatele, jak i przedsiębiorstwa — przestrzegają określonych norm środowiskowych. Bez regulacji wiele firm ignorowałoby koszty środowiskowe dla osiągnięcia większego zysku. Z drugiej strony, niektórzy twierdzą, że nadmierna ingerencja państwa ogranicza wolność jednostki i może hamować innowacje gospodarcze. Uważam jednak, że w obliczu kryzysu klimatycznego same dobrowolne działania są niewystarczające. Potrzebujemy zarówno surowych przepisów, jak i edukacji społeczeństwa, aby zmienić nasze nawyki konsumpcyjne. Przyszłość planety zależy od natychmiastowych, skoordynowanych działań na wszystkich poziomach.",
+    phrases: ["z jednej strony", "z drugiej strony", "zarówno...jak i", "niektórzy twierdzą", "uważam jednak", "w obliczu", "potrzebujemy"]
+  },
+  {
+    level: "higher",
+    topic: "Praca",
+    title: "Praca marzeń",
+    prompt: "Opisz swoją wymarzoną pracę i wyjaśnij, dlaczego ją wybrałeś/wybrałaś. Napisz o wymaganych kwalifikacjach, zaletach i wyzwaniach oraz o tym, jak planujesz osiągnąć swój cel. (ok. 150 słów)",
+    target: 150,
+    model: "Od dziecka marzyłam o zostaniu lekarką. Ta praca jest niezwykle ważna dla społeczeństwa, ponieważ lekarze ratują życie ludzi i pomagają im w najtrudniejszych momentach. Aby zostać lekarką, muszę najpierw zdać egzaminy maturalne z biologii i chemii na wysokim poziomie, a następnie ukończyć sześcioletnie studia medyczne. To długa i trudna droga, ale jestem zdeterminowana. Największą zaletą tej pracy jest satysfakcja z pomagania innym oraz stabilne zatrudnienie. Jednak medycyna wiąże się też z wyzwaniami — długie dyżury, ogromna odpowiedzialność i stres. Mimo to uważam, że jest to właściwy wybór dla mnie, ponieważ jestem cierpliwa, empatyczna i dobrze radzę sobie pod presją. W przyszłym roku zacznę wolontariat w lokalnym szpitalu, aby zdobyć pierwsze doświadczenie.",
+    phrases: ["od dziecka marzyłam", "niezwykle ważna", "aby zostać", "jestem zdeterminowana", "największą zaletą", "wiąże się z", "mimo to uważam"]
+  },
+  {
+    level: "higher",
+    topic: "Technologia",
+    title: "Sztuczna inteligencja — zagrożenie czy szansa?",
+    prompt: "Napisz esej o wpływie sztucznej inteligencji na rynek pracy. Czy AI stanowi zagrożenie dla zatrudnienia, czy otwiera nowe możliwości? Podaj argumenty i własną opinię. (ok. 150 słów)",
+    target: 150,
+    model: "Sztuczna inteligencja rewolucjonizuje współczesny rynek pracy w sposób, który jeszcze dwadzieścia lat temu był niemożliwy do przewidzenia. Entuzjaści AI podkreślają, że automatyzacja uwalnia ludzi od monotonnych, powtarzalnych zadań, pozwalając im skupić się na kreatywnej i strategicznej pracy. Ponadto AI tworzy zupełnie nowe branże i zawody, których wcześniej nie było. Krytycy natomiast ostrzegają, że miliony miejsc pracy mogą zniknąć szybciej, niż gospodarka będzie w stanie stworzyć nowe. Szczególnie narażone są zawody oparte na rutynowych czynnościach, jak obsługa klienta czy podstawowa analiza danych. Moim zdaniem kluczowym wyzwaniem jest przekwalifikowanie pracowników i inwestycje w edukację. Rządy i firmy muszą współpracować, aby zapewnić, że korzyści z AI będą rozdzielone sprawiedliwie w całym społeczeństwie.",
+    phrases: ["rewolucjonizuje", "entuzjaści podkreślają", "ponadto", "krytycy ostrzegają", "szczególnie narażone", "moim zdaniem", "kluczowym wyzwaniem"]
+  },
+  {
+    level: "higher",
+    topic: "Relacje",
+    title: "Wpływ mediów na relacje społeczne",
+    prompt: "Czy media społecznościowe wzmacniają czy osłabiają prawdziwe relacje międzyludzkie? Napisz esej, przedstawiając obie strony argumentu i broniąc własnego stanowiska. (ok. 150 słów)",
+    target: 150,
+    model: "Media społecznościowe fundamentalnie zmieniły sposób, w jaki nawiązujemy i podtrzymujemy relacje. Zwolennicy platform cyfrowych argumentują, że umożliwiają one kontakt z bliskimi niezależnie od odległości geograficznej oraz pomagają osobom nieśmiałym w budowaniu kontaktów. Badania pokazują jednak, że nadmierne korzystanie z mediów społecznościowych może prowadzić do powierzchowności relacji i zastępowania głębokich rozmów krótkimi wiadomościami. Zjawisko FOMO — lęku przed wykluczeniem — negatywnie wpływa na zdrowie psychiczne szczególnie młodych ludzi. Uważam, że problem nie leży w technologii samej w sobie, lecz w sposobie jej wykorzystania. Jeśli media społecznościowe służą jako uzupełnienie, a nie substytut prawdziwych spotkań, mogą wzbogacać nasze relacje. Kluczem jest świadome korzystanie z technologii i zachowanie równowagi między światem cyfrowym a rzeczywistym.",
+    phrases: ["fundamentalnie zmieniły", "zwolennicy argumentują", "badania pokazują", "może prowadzić do", "zjawisko", "uważam że", "kluczem jest"]
+  },
+  {
+    level: "foundation",
+    topic: "Podróże",
+    title: "Idealne wakacje",
+    prompt: "Opisz swoje idealne wakacje. Napisz o: miejscu, rodzaju zakwaterowania, atrakcjach i z kim chciałbyś/chciałabyś pojechać. (ok. 80–90 słów)",
+    target: 80,
+    model: "Moje idealne wakacje to dwa tygodnie w Japonii. Chciałbym pojechać tam z moimi najlepszymi przyjaciółmi. Zatrzymalibyśmy się w tradycyjnym japońskim hotelu, który nazywa się ryokan. Chciałbym zwiedzić Tokio, Kyoto i górę Fuji. W Japonii jest bardzo ciekawa kultura, pyszne jedzenie i piękna przyroda. Chciałbym spróbować sushi, ramen i mochi. Japonia jest droga, więc muszę oszczędzać pieniądze przez kilka lat. To jest moje wielkie marzenie!",
+    phrases: ["chciałbym pojechać", "zatrzymalibyśmy się", "chciałbym zwiedzić", "jest bardzo ciekawa", "chciałbym spróbować", "muszę oszczędzać"]
+  },
+  {
+    level: "foundation",
+    topic: "Praca",
+    title: "Moja przyszła praca",
+    prompt: "Napisz o swojej przyszłej pracy. Co chciałbyś/chciałabyś robić i dlaczego? Jakie są zalety tej pracy? (ok. 80–90 słów)",
+    target: 80,
+    model: "W przyszłości chciałbym zostać inżynierem komputerowym. Zawsze interesowały mnie komputery i programowanie. Uważam, że ta praca jest bardzo interesująca i dobrze płatna. Inżynierowie komputerowi pracują nad nowymi technologiami, które zmieniają świat. Aby zostać inżynierem, muszę dobrze zdać egzaminy z matematyki i fizyki. Planuję studiować informatykę na uniwersytecie. Chciałbym pracować w dużej firmie technologicznej, na przykład w Google lub w polskiej firmie. To jest mój plan na przyszłość.",
+    phrases: ["w przyszłości chciałbym", "zawsze interesowały mnie", "uważam że", "aby zostać", "muszę dobrze", "planuję"]
+  },
+  {
+    level: "higher",
+    topic: "Zdrowie",
+    title: "Zdrowie psychiczne młodych ludzi",
+    prompt: "Napisz esej o problemach zdrowia psychicznego wśród młodych ludzi. Jakie są przyczyny i możliwe rozwiązania? Użyj konkretnych przykładów. (ok. 150 słów)",
+    target: 150,
+    model: "Zdrowie psychiczne młodych ludzi stało się jednym z najpilniejszych problemów współczesności. Badania wskazują, że co czwarty nastolatek doświadcza zaburzeń lękowych lub depresji — liczba ta gwałtownie wzrosła w ostatnich latach. Przyczyny są złożone i wielowymiarowe. Presja akademicka i rywalizacja o miejsca na uczelniach generują ogromny stres. Media społecznościowe kreują nierealistyczne standardy piękna i sukcesu, prowadząc do niskiej samooceny. Pandemia COVID-19 dodatkowo pogłębiła izolację społeczną wśród młodych. Rozwiązanie tego kryzysu wymaga działań na wielu poziomach. Szkoły powinny wprowadzić obowiązkowe zajęcia z edukacji emocjonalnej i zapewnić łatwy dostęp do psychologów szkolnych. Rodzice muszą tworzyć środowisko, w którym dzieci mogą otwarcie mówić o swoich trudnościach. Rząd natomiast powinien znacznie zwiększyć finansowanie psychiatrii dziecięcej. Zdrowie psychiczne musi być traktowane tak samo poważnie jak fizyczne.",
+    phrases: ["badania wskazują", "gwałtownie wzrosła", "przyczyny są złożone", "generują ogromny stres", "prowadząc do", "wymaga działań", "powinny wprowadzić"]
+  },
+  {
+    level: "higher",
+    topic: "Podróże",
+    title: "Turystyka a środowisko",
+    prompt: "Omów wpływ turystyki masowej na środowisko naturalne i lokalne społeczności. Zaproponuj rozwiązania, które mogłyby zrównoważyć korzyści ekonomiczne z ochroną środowiska. (ok. 150 słów)",
+    target: 150,
+    model: "Turystyka masowa jest zjawiskiem ambiwalentnym — przynosi ogromne korzyści gospodarcze, jednocześnie wywierając destruktywny wpływ na środowisko i kulturę lokalną. Miliony turystów rocznie odwiedzają takie miejsca jak Wenecja, Dubrownik czy Bali, przyczyniając się do zanieczyszczenia, dewastacji zabytków i wywierania presji na lokalne zasoby wodne i energetyczne. Mieszkańcy popularnych destynacji często skarżą się na wzrost cen nieruchomości i utratę własnej kultury na rzecz komercjalizacji. Rozwiązaniem może być model zrównoważonej turystyki, który ogranicza dzienną liczbę odwiedzających, wprowadza specjalne podatki turystyczne przeznaczane na ochronę środowiska oraz promuje mniej znane destynacje. Turyści powinni być edukowani w zakresie odpowiedzialnego podróżowania — wyboru lokalnych przewodników, unikania plastiku i szanowania lokalnych tradycji. Tylko holistyczne podejście może zapewnić, że turystyka pozostanie zrównoważona dla przyszłych pokoleń.",
+    phrases: ["jest zjawiskiem ambiwalentnym", "jednocześnie", "przyczyniając się do", "skarżą się na", "rozwiązaniem może być", "powinni być edukowani", "tylko holistyczne podejście"]
+  }
+];
+
+// ==================== STATE ====================
+let level = "foundation";
+let activeTypes = ["vocab","grammar","translation","mc"];
+let questions = [];
+let current = 0;
+let correct = 0;
+let wrong = 0;
+let answered = false;
+let sessionTopicStats = {};
+let writingIdx = 0;
+let currentSection = "quiz";
+
+const typeLabels = {vocab:"Słownictwo", grammar:"Gramatyka", translation:"Tłumaczenie", mc:"Wielokrotny wybór"};
+const typeKeys = ["vocab","grammar","translation","mc"];
+
+// ==================== NAVIGATION ====================
+function showSection(s) {
+  currentSection = s;
+  document.querySelectorAll(".section").forEach(el => el.classList.remove("active"));
+  document.querySelectorAll(".nav-tab").forEach(el => el.classList.remove("active"));
+  document.getElementById("section-" + s).classList.add("active");
+  document.querySelectorAll(".nav-tab").forEach((el, i) => {
+    if (["quiz","writing","history"].includes(s) && el.textContent.toLowerCase().includes(s === "quiz" ? "quiz" : s === "writing" ? "wyprac" : "histo")) el.classList.add("active");
+  });
+  const tabs = document.querySelectorAll(".nav-tab");
+  if (s === "quiz") tabs[0].classList.add("active");
+  else if (s === "writing") tabs[1].classList.add("active");
+  else if (s === "history") { tabs[2].classList.add("active"); renderHistory(); }
+  if (s === "writing") renderWriting();
+}
+
+function printWorksheet() {
+  document.querySelectorAll(".nav-tab")[3].classList.add("active");
+  setTimeout(() => { window.print(); }, 100);
+}
+
+// ==================== QUIZ ====================
+function buildFilters() {
+  const row = document.getElementById("filter-row");
+  row.innerHTML = "";
+  typeKeys.forEach(t => {
+    const chip = document.createElement("button");
+    chip.className = "filter-chip" + (activeTypes.includes(t) ? " active" : "");
+    chip.textContent = typeLabels[t];
+    chip.onclick = () => toggleType(t, chip);
+    row.appendChild(chip);
+  });
+}
+
+function toggleType(t, chip) {
+  if (activeTypes.includes(t)) {
+    if (activeTypes.length === 1) return;
+    activeTypes = activeTypes.filter(x => x !== t);
+    chip.classList.remove("active");
+  } else {
+    activeTypes.push(t);
+    chip.classList.add("active");
+  }
+  restartQuiz();
+}
+
+function setLevel(l) {
+  level = l;
+  document.getElementById("btn-foundation").classList.toggle("active", l === "foundation");
+  document.getElementById("btn-higher").classList.toggle("active", l === "higher");
+  restartQuiz();
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function restartQuiz() {
+  current = 0; correct = 0; wrong = 0; answered = false;
+  sessionTopicStats = {};
+  const pool = DB[level].filter(q => activeTypes.includes(q.type));
+  questions = shuffle(pool);
+  document.getElementById("results-area").classList.add("hidden");
+  document.getElementById("quiz-area").classList.remove("hidden");
+  updateStats();
+  renderQuestion();
+}
+
+function normalize(s) { return s.trim().toLowerCase().replace(/[.!?,]/g, ""); }
+
+function levenshtein(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array.from({length: m+1}, (_, i) => [i]);
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++)
+    for (let j = 1; j <= n; j++)
+      dp[i][j] = a[i-1]===b[j-1] ? dp[i-1][j-1] : 1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
+  return dp[m][n];
+}
+
+function diffHighlight(user, correct) {
+  let html = ""; let ci=0, ui=0;
+  const c=correct.trim(), u=user.trim();
+  while(ci<c.length||ui<u.length){
+    if(ci<c.length&&ui<u.length&&c[ci].toLowerCase()===u[ui].toLowerCase()){html+=c[ci];ci++;ui++;}
+    else{html+='<span class="diff-missing">'+(c[ci]||"")+"</span>";ci++;if(ui<u.length)ui++;}
+  }
+  return html;
+}
+
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = "pl-PL";
+  utt.rate = 0.85;
+  const voices = window.speechSynthesis.getVoices();
+  const plVoice = voices.find(v => v.lang.startsWith("pl"));
+  if (plVoice) utt.voice = plVoice;
+  const btn = document.getElementById("listen-btn");
+  if (btn) { btn.classList.add("playing"); btn.textContent = "🔊 Odtwarzam..."; }
+  utt.onend = () => { if (btn) { btn.classList.remove("playing"); btn.innerHTML = "🔊 Wysłuchaj pytania"; } };
+  window.speechSynthesis.speak(utt);
+}
+
+function renderQuestion() {
+  if (current >= questions.length) { showResults(); return; }
+  answered = false;
+  const q = questions[current];
+  updateStats();
+  document.getElementById("progress").style.width = ((current/questions.length)*100)+"%";
+
+  const listenBtn = `<button class="listen-btn" id="listen-btn" onclick="speak('${q.q.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">🔊 Wysłuchaj pytania</button>`;
+
+  let inputHTML = "";
+  if (q.type === "mc") {
+    const opts = shuffle(q.options);
+    inputHTML = '<div class="mc-options">'+opts.map(o=>`<button class="mc-btn" onclick="checkMC(this,'${o.replace(/'/g,"\\'")}','${q.answer.replace(/'/g,"\\'")}')">` + o + `</button>`).join("")+"</div>";
+  } else {
+    inputHTML = `<textarea class="answer-input" id="ans-input" placeholder="Wpisz odpowiedź..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitAnswer();}"></textarea>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="submitAnswer()">Sprawdź</button>
+      <button class="btn" onclick="skipQuestion()">Pomiń</button>
+    </div>`;
+  }
+
+  document.getElementById("quiz-area").innerHTML = `
+    <div class="question-card">
+      <div class="q-meta">
+        <span class="badge badge-level">${level==="foundation"?"Foundation":"Higher"}</span>
+        <span class="badge badge-type">${typeLabels[q.type]}</span>
+        <span class="badge badge-topic">${q.topic}</span>
+      </div>
+      <p class="q-text">${q.q}</p>
+      ${listenBtn}
+      <p class="q-hint">💡 Wskazówka: <span>${q.hint}</span></p>
+      ${inputHTML}
+      <div id="feedback"></div>
+    </div>
+    <div class="btn-row" id="nav-btn" style="display:none">
+      <button class="btn btn-primary" onclick="nextQuestion()">Następne pytanie →</button>
+    </div>`;
+  if (q.type !== "mc") setTimeout(() => { const i=document.getElementById("ans-input"); if(i) i.focus(); }, 80);
+  // load voices
+  if (window.speechSynthesis && window.speechSynthesis.getVoices().length === 0) window.speechSynthesis.onvoiceschanged = () => {};
+}
+
+function recordTopicStat(topic, isCorrect) {
+  if (!sessionTopicStats[topic]) sessionTopicStats[topic] = {c:0,t:0};
+  sessionTopicStats[topic].t++;
+  if (isCorrect) sessionTopicStats[topic].c++;
+}
+
+function checkMC(btn, chosen, correctAns) {
+  if (answered) return;
+  answered = true;
+  const q = questions[current];
+  btn.parentElement.querySelectorAll(".mc-btn").forEach(b => {
+    b.disabled = true;
+    if (b.textContent.trim()===correctAns) b.classList.add("correct");
+    else if (b.textContent.trim()===chosen&&chosen!==correctAns) b.classList.add("incorrect");
+  });
+  const isOk = chosen===correctAns;
+  if (isOk) correct++; else wrong++;
+  recordTopicStat(q.topic, isOk);
+  const fb = document.getElementById("feedback");
+  fb.innerHTML = isOk ? '<div class="feedback correct">✓ Doskonale! Poprawna odpowiedź.</div>'
+    : `<div class="feedback incorrect">✗ Błąd. Poprawna odpowiedź: <strong>${correctAns}</strong></div>`;
+  document.getElementById("nav-btn").style.display = "flex";
+  updateStats();
+}
+
+function submitAnswer() {
+  if (answered) return;
+  const inp = document.getElementById("ans-input");
+  if (!inp||!inp.value.trim()) return;
+  answered = true; inp.disabled = true;
+  const q = questions[current];
+  const user = inp.value;
+  const isCorrect = normalize(user)===normalize(q.answer);
+  const isClose = !isCorrect && levenshtein(normalize(user),normalize(q.answer))<=2;
+  if (isCorrect) correct++; else wrong++;
+  recordTopicStat(q.topic, isCorrect);
+  const fb = document.getElementById("feedback");
+  if (isCorrect) fb.innerHTML = `<div class="feedback correct">✓ Doskonale! Poprawna odpowiedź.</div>`;
+  else if (isClose) fb.innerHTML = `<div class="feedback partial">⚠ Prawie! Błąd ortograficzny lub znak diakrytyczny.<div class="correct-answer">Twoja: <em>${user}</em><br>Poprawna: <strong>${diffHighlight(user,q.answer)}</strong></div></div>`;
+  else fb.innerHTML = `<div class="feedback incorrect">✗ Błąd.<div class="correct-answer">Twoja: <em>${user}</em><br>Poprawna: <strong>${q.answer}</strong></div></div>`;
+  document.getElementById("nav-btn").style.display = "flex";
+  updateStats();
+}
+
+function skipQuestion() {
+  if (answered) return;
+  answered = true; wrong++;
+  const q = questions[current];
+  recordTopicStat(q.topic, false);
+  document.getElementById("feedback").innerHTML = `<div class="feedback partial">→ Pominięto. Poprawna: <strong>${q.answer}</strong></div>`;
+  document.getElementById("nav-btn").style.display = "flex";
+  updateStats();
+}
+
+function nextQuestion() { current++; renderQuestion(); }
+
+function updateStats() {
+  const total = correct+wrong;
+  document.getElementById("stat-q").textContent = (current<questions.length?current+1:questions.length)+"/"+questions.length;
+  document.getElementById("stat-correct").textContent = correct;
+  document.getElementById("stat-wrong").textContent = wrong;
+  document.getElementById("stat-pct").textContent = total>0?Math.round((correct/total)*100)+"%":"—";
+}
+
+function showResults() {
+  document.getElementById("quiz-area").classList.add("hidden");
+  document.getElementById("progress").style.width = "100%";
+  const total = correct+wrong;
+  const pct = total>0?Math.round((correct/total)*100):0;
+  const msg = pct>=80?"Świetny wynik! Jesteś dobrze przygotowany/a.":pct>=60?"Dobry wynik! Warto powtórzyć trudniejsze tematy.":"Ćwicz dalej — spróbuj ponownie!";
+  const grade = pct>=80?"9–7":pct>=60?"6–5":pct>=40?"4–3":"2–1";
+  const scoreColor = pct>=80?"var(--green)":pct>=60?"var(--warn)":"var(--red)";
+  saveHistory(pct, correct, wrong, grade);
+  let topicBars = "";
+  Object.entries(sessionTopicStats).forEach(([topic, s]) => {
+    const p = s.t>0?Math.round((s.c/s.t)*100):0;
+    topicBars += `<div class="topic-bar-row"><span class="topic-bar-label">${topic}</span><div class="topic-bar-wrap"><div class="topic-bar-fill" style="width:${p}%"></div></div><span class="topic-bar-pct">${p}%</span></div>`;
+  });
+  document.getElementById("results-area").innerHTML = `
+    <div class="results-card">
+      <div class="results-score" style="color:${scoreColor}">${pct}%</div>
+      <div class="results-label">${msg}</div>
+      <div class="results-breakdown">
+        <div class="stat"><div class="stat-val" style="color:var(--green)">${correct}</div><div class="stat-lbl">poprawne</div></div>
+        <div class="stat"><div class="stat-val" style="color:var(--red)">${wrong}</div><div class="stat-lbl">błędy</div></div>
+        <div class="stat"><div class="stat-val">${grade}</div><div class="stat-lbl">ocena GCSE</div></div>
+      </div>
+      ${topicBars?`<div class="session-bars" style="margin-bottom:1.5rem">${topicBars}</div>`:""}
+      <div class="btn-row" style="justify-content:center;gap:10px;">
+        <button class="btn btn-primary" onclick="restartQuiz()">Zacznij ponownie</button>
+        <button class="btn" onclick="setLevel(level==='foundation'?'higher':'foundation')">Zmień poziom</button>
+        <button class="btn" onclick="showSection('history')">Zobacz historię</button>
+      </div>
+    </div>`;
+  document.getElementById("results-area").classList.remove("hidden");
+}
+
+// ==================== HISTORY ====================
+function saveHistory(pct, c, w, grade) {
+  const history = JSON.parse(localStorage.getItem("gcse_pl_t2_history")||"[]");
+  history.unshift({
+    date: new Date().toLocaleDateString("pl-PL"),
+    time: new Date().toLocaleTimeString("pl-PL",{hour:"2-digit",minute:"2-digit"}),
+    pct, correct:c, wrong:w, grade, level,
+    topics: JSON.parse(JSON.stringify(sessionTopicStats))
+  });
+  if (history.length > 20) history.pop();
+  localStorage.setItem("gcse_pl_t2_history", JSON.stringify(history));
+}
+
+function clearHistory() {
+  if (confirm("Usunąć całą historię wyników?")) {
+    localStorage.removeItem("gcse_pl_t2_history");
+    renderHistory();
+  }
+}
+
+function renderHistory() {
+  const area = document.getElementById("history-area");
+  const history = JSON.parse(localStorage.getItem("gcse_pl_t2_history")||"[]");
+  if (!history.length) {
+    area.innerHTML = '<div class="history-empty"><p>Brak zapisanych wyników.</p><p style="font-size:13px">Ukończ quiz, aby zobaczyć historię.</p></div>';
+    return;
+  }
+  area.innerHTML = history.map((s,i) => {
+    const sc = s.pct>=80?"var(--green)":s.pct>=60?"var(--warn)":"var(--red)";
+    let bars = "";
+    if (s.topics) {
+      Object.entries(s.topics).forEach(([t,v]) => {
+        const p = v.t>0?Math.round((v.c/v.t)*100):0;
+        bars += `<div class="topic-bar-row"><span class="topic-bar-label">${t}</span><div class="topic-bar-wrap"><div class="topic-bar-fill" style="width:${p}%"></div></div><span class="topic-bar-pct">${p}%</span></div>`;
+      });
+    }
+    return `<div class="session-card">
+      <div class="session-header">
+        <div>
+          <div style="font-weight:600;font-size:14px;">${s.date} · ${s.time}</div>
+          <div class="session-date">${s.level==="foundation"?"Foundation":"Higher"} · ocena ${s.grade} · ${s.correct} poprawne / ${s.wrong} błędy</div>
+        </div>
+        <div class="session-score" style="color:${sc}">${s.pct}%</div>
+      </div>
+      ${bars?`<div class="session-bars">${bars}</div>`:""}
+    </div>`;
+  }).join("");
+}
+
+// ==================== WRITING ====================
+function getWritingPrompts() {
+  return WRITING_PROMPTS.filter(p => p.level === level);
+}
+
+function renderWriting() {
+  const prompts = getWritingPrompts();
+  if (!prompts.length) { document.getElementById("writing-area").innerHTML = '<p style="color:var(--text2);padding:1rem 0">Brak zadań dla tego poziomu.</p>'; return; }
+  if (writingIdx >= prompts.length) writingIdx = 0;
+  const p = prompts[writingIdx];
+  document.getElementById("writing-counter").textContent = `Zadanie ${writingIdx+1} / ${prompts.length} · ${p.level==="foundation"?"Foundation":"Higher"}`;
+  document.getElementById("writing-area").innerHTML = `
+    <div class="writing-card">
+      <div class="q-meta">
+        <span class="badge badge-level">${p.level==="foundation"?"Foundation":"Higher"}</span>
+        <span class="badge badge-topic">${p.topic}</span>
+      </div>
+      <h3>${p.title}</h3>
+      <p class="writing-prompt" style="margin-top:8px">${p.prompt}</p>
+      <p class="writing-meta">Cel: ok. ${p.target} słów</p>
+      <textarea class="writing-input" id="writing-input" placeholder="Napisz tutaj swoją odpowiedź..." oninput="updateWordCount(this)"></textarea>
+      <div class="word-count" id="word-count">0 / ${p.target} słów</div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="showModelAnswer()">Pokaż wzorcową odpowiedź</button>
+        <button class="btn" onclick="listenPrompt()">🔊 Wysłuchaj tematu</button>
+      </div>
+      <div id="model-answer-area"></div>
+    </div>`;
+}
+
+function updateWordCount(ta) {
+  const words = ta.value.trim() ? ta.value.trim().split(/\s+/).length : 0;
+  const prompts = getWritingPrompts();
+  const target = prompts[writingIdx]?.target || 80;
+  const el = document.getElementById("word-count");
+  if (el) {
+    el.textContent = `${words} / ${target} słów`;
+    el.style.color = words >= target ? "var(--green)" : "var(--text3)";
+  }
+}
+
+function showModelAnswer() {
+  const prompts = getWritingPrompts();
+  const p = prompts[writingIdx];
+  if (!p) return;
+  const area = document.getElementById("model-answer-area");
+  if (area.innerHTML) { area.innerHTML = ""; return; }
+  area.innerHTML = `
+    <div class="model-answer">
+      <h4>Wzorcowa odpowiedź</h4>
+      <p>${p.model}</p>
+    </div>
+    <div class="key-phrases">
+      <h4>Kluczowe zwroty</h4>
+      <div class="phrase-list">${p.phrases.map(ph=>`<span class="phrase">${ph}</span>`).join("")}</div>
+    </div>`;
+}
+
+function listenPrompt() {
+  const prompts = getWritingPrompts();
+  const p = prompts[writingIdx];
+  if (p) speak(p.prompt);
+}
+
+function nextWriting() {
+  const prompts = getWritingPrompts();
+  writingIdx = (writingIdx+1) % prompts.length;
+  renderWriting();
+}
+
+function prevWriting() {
+  const prompts = getWritingPrompts();
+  writingIdx = (writingIdx-1+prompts.length) % prompts.length;
+  renderWriting();
+}
+
+// ==================== INIT ====================
+buildFilters();
+restartQuiz();
+window.speechSynthesis && window.speechSynthesis.getVoices();
+</script>
+</body>
+</html>
