@@ -2,693 +2,901 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz GCSE — Język Polski</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Polski App 1">
+<title>Polski GCSE App 1</title>
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --bg: #f7f5f0;
-  --surface: #ffffff;
-  --surface2: #f0ede8;
-  --border: #e0dbd4;
-  --text: #1a1714;
-  --text2: #6b635c;
-  --text3: #9c9089;
-  --accent: #c1440e;
-  --accent-bg: #fdf0eb;
-  --green: #1a6b3c;
-  --green-bg: #ebf5f0;
-  --blue: #1a4a7a;
-  --blue-bg: #ebf0f8;
-  --warn: #8a5c00;
-  --warn-bg: #fff8eb;
-  --radius: 10px;
-  --radius-lg: 14px;
-  --font: 'DM Sans', sans-serif;
-  --mono: 'DM Mono', monospace;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#f5f2ed;--sur:#fff;--s2:#ece8e2;--brd:#d5cfc8;
+  --tx:#1a1714;--t2:#6b615a;--t3:#a09890;
+  --acc:#c1440e;--a2:#1a5c8a;
+  --grn:#1a6b3c;--gbg:#eaf5ee;--gbd:#a8d4bc;
+  --red:#b83020;--rbg:#fdf0ee;--rbd:#f0b0a0;
+  --wrn:#8a5800;--wbg:#fff8e8;--wbd:#f0d070;
+  --r:12px;--rl:16px;--rs:8px;
+  --f:-apple-system,BlinkMacSystemFont,SF Pro Display,Segoe UI,sans-serif;
+  --sbi:env(safe-area-inset-bottom,0px);--sti:env(safe-area-inset-top,44px);
 }
-
-body {
-  font-family: var(--font);
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  padding: 2rem 1rem;
-}
-
-.container {
-  max-width: 680px;
-  margin: 0 auto;
-}
-
-header {
-  margin-bottom: 2rem;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 4px;
-}
-
-.logo-mark {
-  width: 36px;
-  height: 36px;
-  background: var(--accent);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 600;
-  font-size: 14px;
-  font-family: var(--mono);
-  flex-shrink: 0;
-}
-
-header h1 {
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--text);
-}
-
-header p {
-  font-size: 14px;
-  color: var(--text2);
-  margin-top: 4px;
-}
-
-.level-selector {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 1.25rem;
-  background: var(--surface2);
-  padding: 4px;
-  border-radius: var(--radius);
-  width: fit-content;
-}
-
-.level-btn {
-  padding: 7px 20px;
-  border: none;
-  border-radius: 7px;
-  font-family: var(--font);
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  background: transparent;
-  color: var(--text2);
-  transition: all 0.15s;
-}
-
-.level-btn.active {
-  background: var(--surface);
-  color: var(--text);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.filter-row {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-bottom: 1.25rem;
-}
-
-.filter-chip {
-  padding: 5px 12px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text2);
-  font-size: 12px;
-  font-family: var(--font);
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-
-.filter-chip.active {
-  background: var(--green-bg);
-  color: var(--green);
-  border-color: #a8d4bc;
-}
-
-.progress-wrap {
-  background: var(--surface2);
-  border-radius: 4px;
-  height: 4px;
-  margin-bottom: 1.25rem;
-}
-
-.progress-fill {
-  height: 100%;
-  background: var(--accent);
-  border-radius: 4px;
-  transition: width 0.4s ease;
-}
-
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin-bottom: 1.25rem;
-}
-
-.stat {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 10px 12px;
-  text-align: center;
-}
-
-.stat-val {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text);
-  font-family: var(--mono);
-}
-
-.stat-lbl {
-  font-size: 11px;
-  color: var(--text3);
-  margin-top: 2px;
-}
-
-.question-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.q-meta {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 14px;
-  flex-wrap: wrap;
-}
-
-.badge {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 20px;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-
-.badge-level { background: var(--accent-bg); color: var(--accent); }
-.badge-type { background: var(--blue-bg); color: var(--blue); }
-.badge-topic { background: var(--surface2); color: var(--text2); }
-
-.q-text {
-  font-size: 17px;
-  font-weight: 500;
-  color: var(--text);
-  line-height: 1.5;
-  margin-bottom: 6px;
-}
-
-.q-hint {
-  font-size: 13px;
-  color: var(--text3);
-  margin-bottom: 14px;
-}
-
-.q-hint span {
-  color: var(--text2);
-}
-
-textarea.answer-input {
-  width: 100%;
-  padding: 10px 14px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  font-size: 15px;
-  font-family: var(--font);
-  color: var(--text);
-  background: var(--bg);
-  resize: vertical;
-  min-height: 60px;
-  outline: none;
-  transition: border-color 0.15s;
-}
-
-textarea.answer-input:focus {
-  border-color: var(--accent);
-}
-
-.btn-row {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.btn {
-  padding: 9px 18px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  font-size: 14px;
-  font-family: var(--font);
-  font-weight: 500;
-  cursor: pointer;
-  background: var(--surface);
-  color: var(--text);
-  transition: all 0.15s;
-}
-
-.btn:hover { background: var(--surface2); }
-
-.btn-primary {
-  background: var(--accent);
-  color: white;
-  border-color: transparent;
-}
-
-.btn-primary:hover { background: #a83a0c; }
-
-.feedback {
-  margin-top: 14px;
-  padding: 12px 14px;
-  border-radius: var(--radius);
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.feedback.correct { background: var(--green-bg); color: var(--green); border: 1px solid #a8d4bc; }
-.feedback.incorrect { background: var(--accent-bg); color: var(--accent); border: 1px solid #f0c4b4; }
-.feedback.partial { background: var(--warn-bg); color: var(--warn); border: 1px solid #f0d898; }
-
-.correct-answer {
-  margin-top: 8px;
-  font-size: 13px;
-  opacity: 0.85;
-}
-
-.diff-missing {
-  font-weight: 600;
-  background: rgba(193,68,14,0.15);
-  border-bottom: 2px solid var(--accent);
-  border-radius: 2px;
-}
-
-.mc-options {
-  display: grid;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.mc-btn {
-  padding: 11px 14px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  text-align: left;
-  cursor: pointer;
-  background: var(--surface);
-  color: var(--text);
-  font-size: 14px;
-  font-family: var(--font);
-  transition: all 0.15s;
-}
-
-.mc-btn:hover:not(:disabled) { background: var(--surface2); }
-.mc-btn.correct { background: var(--green-bg); color: var(--green); border-color: #a8d4bc; font-weight: 500; }
-.mc-btn.incorrect { background: var(--accent-bg); color: var(--accent); border-color: #f0c4b4; }
-.mc-btn:disabled { cursor: default; }
-
-.results-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 2.5rem;
-  text-align: center;
-}
-
-.results-score {
-  font-size: 56px;
-  font-weight: 600;
-  color: var(--text);
-  font-family: var(--mono);
-}
-
-.results-label {
-  font-size: 16px;
-  color: var(--text2);
-  margin: 8px 0 1.75rem;
-}
-
-.results-breakdown {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 1.75rem;
-}
-
-.hidden { display: none; }
-
-@media (max-width: 480px) {
-  .stats-row { grid-template-columns: repeat(2, 1fr); }
-  .results-breakdown { grid-template-columns: 1fr 1fr; }
-}
+html,body{height:100%;overflow:hidden;font-family:var(--f);background:var(--bg);color:var(--tx);}
+#app{height:100vh;display:flex;flex-direction:column;max-width:430px;margin:0 auto;background:var(--bg);position:relative;}
+#splash{position:fixed;inset:0;background:linear-gradient(160deg,#c1440e,#7a2506);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;padding:32px;text-align:center;transition:opacity .5s;}
+#splash.hide{opacity:0;pointer-events:none;}
+.sp-em{font-size:64px;margin-bottom:16px;animation:bob 1.2s ease infinite alternate;}
+@keyframes bob{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+.sp-name{font-size:28px;font-weight:800;color:#fff;margin-bottom:10px;}
+.sp-msg{font-size:16px;color:rgba(255,255,255,.9);line-height:1.6;margin-bottom:28px;}
+.sp-btn{background:#fff;color:#c1440e;border:none;border-radius:14px;padding:15px 36px;font-size:17px;font-weight:800;cursor:pointer;font-family:var(--f);}
+.sp-sub{font-size:11px;color:rgba(255,255,255,.5);margin-top:14px;}
+.hdr{padding:var(--sti) 16px 10px;background:var(--sur);border-bottom:1px solid var(--brd);flex-shrink:0;}
+.hdr-row{display:flex;align-items:center;justify-content:space-between;}
+.hdr-t{font-size:17px;font-weight:700;}.hdr-s{font-size:11px;color:var(--t2);margin-top:1px;}
+.hdr-b{background:var(--acc);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:12px;}
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 16px calc(76px + var(--sbi));}
+.bnav{position:absolute;bottom:0;left:0;right:0;background:var(--sur);border-top:1px solid var(--brd);display:flex;padding-bottom:var(--sbi);}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 2px 5px;border:none;background:transparent;cursor:pointer;color:var(--t3);font-family:var(--f);font-size:10px;font-weight:500;gap:2px;}
+.ni.active{color:var(--acc);}.ni-ic{font-size:21px;line-height:1;}
+.screen{display:none;}.screen.active{display:block;}
+.card{background:var(--sur);border:1px solid var(--brd);border-radius:var(--rl);padding:16px;margin-bottom:10px;}
+.sec-t{font-size:12px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px;}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:12px;text-transform:uppercase;}
+.bf{background:#e8f1f8;color:#1a5c8a;}.bt{background:var(--s2);color:var(--t2);}
+.welcome{background:linear-gradient(135deg,#c1440e,#7a2506);color:#fff;border-radius:var(--rl);padding:18px;margin-bottom:12px;}
+.wc-top{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.wc-av{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:22px;}
+.wc-n{font-size:20px;font-weight:800;}.wc-s{font-size:12px;opacity:.85;margin-top:2px;}
+.wc-info{background:rgba(255,255,255,.15);border-radius:var(--r);padding:10px 12px;font-size:12px;line-height:1.75;}
+.prog-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.prog-box{background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);padding:10px;text-align:center;}
+.pv{font-size:22px;font-weight:700;color:var(--acc);}.pl{font-size:11px;color:var(--t2);margin-top:2px;}
+.ob-wrap{background:var(--s2);border-radius:4px;height:8px;margin-bottom:4px;}
+.ob{height:100%;border-radius:4px;background:var(--acc);transition:width .6s;}
+.ob-lbl{font-size:12px;color:var(--t2);margin-bottom:14px;}
+.stage-card{background:var(--sur);border:1.5px solid var(--brd);border-radius:var(--rl);padding:14px 16px;margin-bottom:10px;cursor:pointer;position:relative;overflow:hidden;}
+.stage-card:active:not(.locked){background:var(--s2);}
+.stage-card.locked{cursor:default;opacity:.5;}
+.stage-card.done{border-color:var(--gbd);}
+.stage-card.current{border-color:var(--acc);box-shadow:0 0 0 1.5px var(--acc);}
+.sr{display:flex;align-items:center;gap:12px;}
+.sic{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.ic-l{background:var(--s2);}.ic-o{background:var(--wbg);}.ic-d{background:var(--gbg);}
+.si{flex:1;min-width:0;}.sn{font-size:15px;font-weight:700;}
+.sd{font-size:12px;color:var(--t2);margin-top:2px;}
+.ss{font-size:11px;font-weight:600;margin-top:4px;}
+.s-lock{color:var(--t3);}.s-open{color:var(--wrn);}.s-done{color:var(--grn);}
+.s-check{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:22px;}
+.back-btn{display:flex;align-items:center;gap:6px;padding:8px 0;color:var(--t2);font-size:14px;font-weight:600;cursor:pointer;background:none;border:none;font-family:var(--f);margin-bottom:10px;}
+.shdr{background:var(--sur);border:1px solid var(--brd);border-radius:var(--rl);padding:14px;margin-bottom:12px;display:flex;align-items:center;gap:12px;}
+.sh-ic{font-size:28px;}.sh-n{font-size:16px;font-weight:700;}.sh-s{font-size:12px;color:var(--t2);margin-top:2px;}
+.pb-wrap{height:5px;background:var(--s2);border-radius:3px;margin-bottom:10px;}
+.pb{height:100%;border-radius:3px;background:var(--acc);transition:width .4s;}
+.stats-row{display:flex;gap:8px;margin-bottom:10px;}
+.stat-box{flex:1;background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);padding:8px;text-align:center;}
+.sv{font-size:18px;font-weight:700;}.sl2{font-size:10px;color:var(--t2);margin-top:1px;}
+.tip{background:var(--wbg);border:1px solid var(--wbd);border-radius:var(--r);padding:10px 12px;font-size:13px;color:var(--wrn);margin-bottom:12px;}
+.vc-card{background:var(--sur);border:1.5px solid var(--brd);border-radius:var(--rl);padding:20px;margin-bottom:10px;text-align:center;}
+.vc-topic{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--a2);margin-bottom:10px;}
+.vc-en{font-size:28px;font-weight:700;color:var(--tx);margin-bottom:4px;line-height:1.2;}
+.vc-hint{font-size:13px;color:var(--t3);margin-bottom:14px;}
+input.vc-inp{width:100%;padding:14px;border:2px solid var(--brd);border-radius:var(--r);font-size:20px;font-family:var(--f);color:var(--tx);background:var(--bg);text-align:center;outline:none;}
+input.vc-inp:focus{border-color:var(--a2);}
+input.vc-inp.ok{border-color:var(--grn);background:var(--gbg);color:var(--grn);}
+input.vc-inp.bad{border-color:var(--red);background:var(--rbg);}
+input.vc-inp.close{border-color:var(--wrn);background:var(--wbg);}
+.fb{margin-top:10px;padding:12px 14px;border-radius:var(--r);font-size:14px;line-height:1.7;text-align:left;}
+.fb.ok{background:var(--gbg);color:var(--grn);border:1px solid var(--gbd);}
+.fb.bad{background:var(--rbg);color:var(--red);border:1px solid var(--rbd);}
+.fb.close{background:var(--wbg);color:var(--wrn);border:1px solid var(--wbd);}
+.fb-title{font-weight:700;margin-bottom:5px;font-size:15px;}
+.fb-row{display:flex;gap:8px;margin-bottom:4px;align-items:flex-start;}
+.fb-lbl{font-size:12px;font-weight:700;min-width:24px;margin-top:2px;}
+.fb-val{font-size:14px;flex:1;}
+.fb-why{margin-top:7px;padding-top:7px;border-top:1px solid rgba(0,0,0,.08);font-size:13px;}
+.diff-e{font-weight:800;background:rgba(184,48,32,.15);border-bottom:2px solid var(--red);border-radius:2px;}
+.listen-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border:1px solid var(--brd);border-radius:20px;background:var(--sur);font-size:13px;font-family:var(--f);color:var(--t2);cursor:pointer;margin-top:6px;}
+.btn-row{display:flex;gap:8px;margin-top:10px;}
+.btn{padding:12px 18px;border:1.5px solid var(--brd);border-radius:var(--r);font-family:var(--f);font-size:14px;font-weight:600;cursor:pointer;background:var(--sur);color:var(--tx);}
+.btn:active{opacity:.8;}.btn-p{background:var(--acc);color:#fff;border-color:transparent;flex:1;}
+.btn-s{color:var(--t2);}
+.nav-after{display:flex;gap:8px;margin-top:10px;}
+.q-card{background:var(--sur);border:1px solid var(--brd);border-radius:var(--rl);padding:16px;margin-bottom:10px;}
+.q-meta{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
+.q-text{font-size:17px;font-weight:600;line-height:1.45;margin-bottom:8px;}
+.q-hint{background:var(--wbg);border:1px solid var(--wbd);border-radius:var(--rs);padding:8px 12px;font-size:13px;color:var(--wrn);margin-bottom:10px;}
+textarea.ans{width:100%;padding:12px;border:1.5px solid var(--brd);border-radius:var(--r);font-size:16px;font-family:var(--f);color:var(--tx);background:var(--bg);min-height:68px;resize:none;outline:none;}
+textarea.ans:focus{border-color:var(--acc);}
+.mc-opts{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
+.mc-o{padding:13px 14px;border:1.5px solid var(--brd);border-radius:var(--r);text-align:left;background:var(--sur);font-size:15px;font-family:var(--f);cursor:pointer;color:var(--tx);}
+.mc-o:active:not(:disabled){background:var(--s2);}
+.mc-o.correct{background:var(--gbg);color:var(--grn);border-color:var(--gbd);font-weight:600;}
+.mc-o.wrong{background:var(--rbg);color:var(--red);border-color:var(--rbd);}
+.mc-o:disabled{cursor:default;}
+.ort-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
+.ort-o{padding:14px;border:1.5px solid var(--brd);border-radius:var(--r);text-align:center;background:var(--sur);font-size:20px;font-family:var(--f);font-weight:700;cursor:pointer;}
+.ort-o:active:not(:disabled){background:var(--s2);}
+.ort-o.correct{background:var(--gbg);color:var(--grn);border-color:var(--gbd);}
+.ort-o.wrong{background:var(--rbg);color:var(--red);border-color:var(--rbd);}
+.ort-o:disabled{cursor:default;}
+.res-card{background:var(--sur);border:1px solid var(--brd);border-radius:var(--rl);padding:24px;text-align:center;margin-bottom:10px;}
+.res-pct{font-size:60px;font-weight:800;line-height:1;}
+.res-msg{font-size:14px;color:var(--t2);margin:6px 0 16px;line-height:1.5;}
+.res-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;}
+.res-pass{background:var(--gbg);border:1.5px solid var(--gbd);border-radius:var(--r);padding:14px;margin-bottom:14px;}
+.res-pass h3{font-size:16px;font-weight:700;color:var(--grn);margin-bottom:4px;}
+.res-fail{background:var(--wbg);border:1.5px solid var(--wbd);border-radius:var(--r);padding:14px;margin-bottom:14px;}
+.res-fail h3{font-size:16px;font-weight:700;color:var(--wrn);margin-bottom:4px;}
+.rp{font-size:13px;color:var(--t2);}
+.tb-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.tb-l{font-size:12px;color:var(--t2);width:110px;flex-shrink:0;}
+.tb-b{flex:1;height:5px;background:var(--s2);border-radius:3px;}
+.tb-f{height:100%;border-radius:3px;background:var(--a2);}
+.tb-p{font-size:12px;color:var(--t2);width:32px;text-align:right;}
+.ort-ref-card{background:var(--sur);border:1px solid var(--brd);border-radius:var(--rl);padding:16px;margin-bottom:10px;}
+.ort-ltr{font-size:40px;font-weight:800;color:var(--acc);text-align:center;margin-bottom:2px;}
+.ort-nm{font-size:12px;font-weight:700;color:var(--t2);text-align:center;margin-bottom:8px;}
+.ort-rule{font-size:14px;line-height:1.7;margin-bottom:8px;}
+.ort-exs{display:flex;flex-wrap:wrap;gap:6px;}
+.ort-ex{background:var(--s2);border-radius:var(--rs);padding:4px 10px;font-size:13px;font-weight:600;}
+.ort-hl{color:var(--acc);font-weight:800;}
+.gram-sec{background:var(--sur);border:1px solid var(--brd);border-radius:var(--rl);margin-bottom:10px;overflow:hidden;}
+.gram-hdr{padding:14px 16px;display:flex;justify-content:space-between;cursor:pointer;}
+.gram-t{font-size:15px;font-weight:600;}.gram-tog{font-size:18px;color:var(--t3);}
+.gram-body{padding:0 16px 16px;display:none;border-top:1px solid var(--brd);}
+.gram-body.open{display:block;}
+.rt{font-size:12px;font-weight:700;color:var(--acc);margin:12px 0 5px;text-transform:uppercase;letter-spacing:.3px;}
+.tw{overflow-x:auto;margin-top:6px;}
+table{border-collapse:collapse;width:100%;font-size:13px;}
+th{background:var(--s2);padding:7px 9px;text-align:left;font-weight:700;border:1px solid var(--brd);}
+td{padding:7px 9px;border:1px solid var(--brd);}
+td:first-child{font-weight:600;color:var(--a2);}
+.eg{background:#e8f1f8;border-radius:var(--rs);padding:10px 12px;margin-top:8px;font-size:13px;line-height:1.7;}
+.eg-pl{font-weight:600;color:var(--a2);}.eg-en{color:var(--t2);}
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:flex-end;z-index:200;}
+.modal-ov.open{display:flex;}
+.modal-sh{background:var(--sur);border-radius:24px 24px 0 0;padding:28px 24px calc(28px + var(--sbi));width:100%;text-align:center;animation:sup .3s ease;}
+@keyframes sup{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.m-ic{font-size:56px;margin-bottom:12px;}.m-tit{font-size:22px;font-weight:800;margin-bottom:6px;}
+.m-sub{font-size:14px;color:var(--t2);margin-bottom:20px;line-height:1.5;}
+.m-btn{width:100%;padding:15px;border:none;border-radius:var(--r);font-family:var(--f);font-size:16px;font-weight:700;cursor:pointer;margin-bottom:10px;}
+.m-btn.p{background:var(--grn);color:#fff;}.m-btn.s{background:var(--s2);color:var(--tx);}
+.hidden{display:none!important;}
 </style>
 </head>
 <body>
-<div class="container">
-
-  <header>
-    <div class="logo">
-      <div class="logo-mark">PL</div>
-      <h1>Quiz GCSE — Język Polski</h1>
-    </div>
-    <p>Przygotowanie do egzaminów GCSE Polish · AQA / Edexcel / OCR</p>
-  </header>
-
-  <div class="level-selector">
-    <button class="level-btn active" onclick="setLevel('foundation')" id="btn-foundation">Foundation</button>
-    <button class="level-btn" onclick="setLevel('higher')" id="btn-higher">Higher</button>
-  </div>
-
-  <div class="filter-row" id="filter-row"></div>
-
-  <div class="progress-wrap"><div class="progress-fill" id="progress" style="width:0%"></div></div>
-
-  <div class="stats-row">
-    <div class="stat"><div class="stat-val" id="stat-q">—</div><div class="stat-lbl">pytanie</div></div>
-    <div class="stat"><div class="stat-val" id="stat-correct">0</div><div class="stat-lbl">poprawne</div></div>
-    <div class="stat"><div class="stat-val" id="stat-wrong">0</div><div class="stat-lbl">błędy</div></div>
-    <div class="stat"><div class="stat-val" id="stat-pct">—</div><div class="stat-lbl">wynik</div></div>
-  </div>
-
-  <div id="quiz-area"></div>
-  <div id="results-area" class="hidden"></div>
-
+<div id="splash">
+  <div class="sp-em" id="sp-em">🎉</div>
+  <div class="sp-name">Cześć, Izabela!</div>
+  <div class="sp-msg" id="sp-msg">Ładowanie...</div>
+  <button class="sp-btn" onclick="hideSplash()">Zaczynamy! 🚀</button>
+  <div class="sp-sub">App 1 · Słownictwo → Pisownia → Gramatyka · AQA Foundation 2027</div>
 </div>
-
+<div id="app">
+  <div class="hdr">
+    <div class="hdr-row">
+      <div><div class="hdr-t">🇵🇱 Polski GCSE · App 1</div><div class="hdr-s">Słownictwo · Pisownia · Gramatyka</div></div>
+      <div class="hdr-b">AQA F</div>
+    </div>
+  </div>
+  <div class="scroll" id="scroll">
+    <div class="screen active" id="screen-map"><div id="map-content"></div></div>
+    <div class="screen" id="screen-stage">
+      <button class="back-btn" onclick="goBack()">← Powrót do mapy</button>
+      <div id="stage-content"></div>
+    </div>
+  </div>
+  <div class="bnav">
+    <button class="ni active" id="ni-map" onclick="showMap()"><div class="ni-ic">🗺</div>Mapa</button>
+    <button class="ni" id="ni-gram" onclick="openRef('gram')"><div class="ni-ic">📐</div>Gramatyka</button>
+    <button class="ni" id="ni-ort" onclick="openRef('ort')"><div class="ni-ic">✏️</div>Pisownia</button>
+    <button class="ni" id="ni-hist" onclick="openRef('hist')"><div class="ni-ic">📊</div>Wyniki</button>
+  </div>
+</div>
+<div class="modal-ov" id="modal">
+  <div class="modal-sh">
+    <div class="m-ic" id="m-ic">🎉</div>
+    <div class="m-tit" id="m-tit"></div>
+    <div class="m-sub" id="m-sub"></div>
+    <button class="m-btn p" id="m-b1" onclick="mBtn1()"></button>
+    <button class="m-btn s" id="m-b2" onclick="mBtn2()" style="display:none"></button>
+  </div>
+</div>
 <script>
-const DB = {
-foundation: [
-  {type:"vocab",topic:"Rodzina",q:"Jak po polsku 'grandmother'?",answer:"babcia",hint:"rzeczownik żeński"},
-  {type:"vocab",topic:"Rodzina",q:"Jak po polsku 'brother'?",answer:"brat",hint:"rzeczownik"},
-  {type:"vocab",topic:"Rodzina",q:"Jak po polsku 'sister'?",answer:"siostra",hint:"rzeczownik żeński"},
-  {type:"vocab",topic:"Rodzina",q:"Jak po polsku 'parents'?",answer:"rodzice",hint:"liczba mnoga"},
-  {type:"vocab",topic:"Rodzina",q:"Jak po polsku 'husband'?",answer:"mąż",hint:"rzeczownik, mężczyzna"},
-  {type:"vocab",topic:"Rodzina",q:"Jak po polsku 'wife'?",answer:"żona",hint:"rzeczownik żeński"},
-  {type:"vocab",topic:"Szkoła",q:"Jak po polsku 'teacher' (kobieta)?",answer:"nauczycielka",hint:"forma żeńska"},
-  {type:"vocab",topic:"Szkoła",q:"Jak po polsku 'homework'?",answer:"praca domowa",hint:"dwa słowa"},
-  {type:"vocab",topic:"Szkoła",q:"Jak po polsku 'library'?",answer:"biblioteka",hint:"rzeczownik żeński"},
-  {type:"vocab",topic:"Szkoła",q:"Jak po polsku 'lesson'?",answer:"lekcja",hint:"rzeczownik żeński"},
-  {type:"vocab",topic:"Dom",q:"Jak po polsku 'bedroom'?",answer:"sypialnia",hint:"pokój do spania"},
-  {type:"vocab",topic:"Dom",q:"Jak po polsku 'kitchen'?",answer:"kuchnia",hint:"rzeczownik żeński"},
-  {type:"vocab",topic:"Dom",q:"Jak po polsku 'bathroom'?",answer:"łazienka",hint:"rzeczownik żeński"},
-  {type:"vocab",topic:"Dom",q:"Jak po polsku 'living room'?",answer:"salon",hint:"pokój dzienny"},
-  {type:"vocab",topic:"Czas wolny",q:"Jak po polsku 'cinema'?",answer:"kino",hint:"miejsce z filmami"},
-  {type:"vocab",topic:"Czas wolny",q:"Jak po polsku 'swimming pool'?",answer:"basen",hint:"do pływania"},
-  {type:"vocab",topic:"Jedzenie",q:"Jak po polsku 'bread'?",answer:"chleb",hint:"rzeczownik"},
-  {type:"vocab",topic:"Jedzenie",q:"Jak po polsku 'water'?",answer:"woda",hint:"rzeczownik żeński"},
-  {type:"vocab",topic:"Jedzenie",q:"Jak po polsku 'apple'?",answer:"jabłko",hint:"owoc"},
-  {type:"vocab",topic:"Miasto",q:"Jak po polsku 'shop'?",answer:"sklep",hint:"miejsce kupowania"},
-  {type:"vocab",topic:"Miasto",q:"Jak po polsku 'hospital'?",answer:"szpital",hint:"miejsce leczenia"},
-  {type:"vocab",topic:"Miasto",q:"Jak po polsku 'bus stop'?",answer:"przystanek autobusowy",hint:"dwa słowa"},
-  {type:"grammar",topic:"Gramatyka",q:"Odmień: ja ___ (być)",answer:"jestem",hint:"1. os. l. poj. czas teraźniejszy"},
-  {type:"grammar",topic:"Gramatyka",q:"Odmień: ty ___ (mieć)",answer:"masz",hint:"2. os. l. poj. czas teraźniejszy"},
-  {type:"grammar",topic:"Gramatyka",q:"Odmień: ona ___ (iść)",answer:"idzie",hint:"3. os. l. poj. czas teraźniejszy"},
-  {type:"grammar",topic:"Gramatyka",q:"Odmień: my ___ (mieszkać)",answer:"mieszkamy",hint:"1. os. l. mn. czas teraźniejszy"},
-  {type:"grammar",topic:"Gramatyka",q:"Odmień: oni ___ (mówić)",answer:"mówią",hint:"3. os. l. mn. czas teraźniejszy"},
-  {type:"translation",topic:"Tłumaczenie",q:"Przetłumacz na polski: 'I live in a house.'",answer:"Mieszkam w domu.",hint:"czas teraźniejszy"},
-  {type:"translation",topic:"Tłumaczenie",q:"Przetłumacz na polski: 'My name is Anna.'",answer:"Mam na imię Anna.",hint:"forma z 'mam na imię'"},
-  {type:"translation",topic:"Tłumaczenie",q:"Przetłumacz na polski: 'I like football.'",answer:"Lubię piłkę nożną.",hint:"czasownik + biernik"},
-  {type:"translation",topic:"Tłumaczenie",q:"Przetłumacz na angielski: 'Chodzę do szkoły codziennie.'",answer:"I go to school every day.",hint:"codziennie = every day"},
-  {type:"translation",topic:"Tłumaczenie",q:"Przetłumacz na angielski: 'Mam brata i siostrę.'",answer:"I have a brother and a sister.",hint:"liczba pojedyncza"},
-  {type:"mc",topic:"Gramatyka",q:"Który zaimek jest poprawny? 'To ___ moja mama.'",answer:"jest",options:["jest","jestem","jesteś","są"],hint:"3. os. l. poj."},
-  {type:"mc",topic:"Liczby",q:"Ile to po polsku? 15",answer:"piętnaście",options:["czternaście","piętnaście","szesnaście","siedemnaście"],hint:"10 + 5"},
-  {type:"mc",topic:"Kolory",q:"Jak po polsku 'red'?",answer:"czerwony",options:["niebieski","zielony","czerwony","żółty"],hint:"kolor ognia"},
-  {type:"mc",topic:"Czas wolny",q:"'Czytam' znaczy po angielsku:",answer:"I read / I am reading",options:["I write","I read / I am reading","I watch","I listen"],hint:"od czasownika 'czytać'"},
-  {type:"mc",topic:"Dni tygodnia",q:"Który dzień jest po 'poniedziałek'?",answer:"wtorek",options:["środa","wtorek","czwartek","piątek"],hint:"drugi dzień tygodnia"},
-  {type:"mc",topic:"Pory roku",q:"Jak po polsku 'summer'?",answer:"lato",options:["zima","wiosna","lato","jesień"],hint:"najcieplejsza pora roku"},
-],
-higher: [
-  {type:"vocab",topic:"Środowisko",q:"Jak po polsku 'climate change'?",answer:"zmiana klimatu",hint:"dwa słowa"},
-  {type:"vocab",topic:"Środowisko",q:"Jak po polsku 'recycling'?",answer:"recykling",hint:"podobne do angielskiego"},
-  {type:"vocab",topic:"Środowisko",q:"Jak po polsku 'pollution'?",answer:"zanieczyszczenie",hint:"skażenie środowiska"},
-  {type:"vocab",topic:"Zdrowie",q:"Jak po polsku 'healthy lifestyle'?",answer:"zdrowy styl życia",hint:"trzy słowa"},
-  {type:"vocab",topic:"Zdrowie",q:"Jak po polsku 'mental health'?",answer:"zdrowie psychiczne",hint:"dwa słowa"},
-  {type:"vocab",topic:"Praca",q:"Jak po polsku 'unemployment'?",answer:"bezrobocie",hint:"bez + praca"},
-  {type:"vocab",topic:"Praca",q:"Jak po polsku 'salary'?",answer:"pensja",hint:"wynagrodzenie"},
-  {type:"vocab",topic:"Technologia",q:"Jak po polsku 'social media'?",answer:"media społecznościowe",hint:"dwa słowa"},
-  {type:"vocab",topic:"Technologia",q:"Jak po polsku 'artificial intelligence'?",answer:"sztuczna inteligencja",hint:"dwa słowa"},
-  {type:"vocab",topic:"Podróże",q:"Jak po polsku 'airport'?",answer:"lotnisko",hint:"gdzie lądują samoloty"},
-  {type:"vocab",topic:"Edukacja",q:"Jak po polsku 'university'?",answer:"uniwersytet",hint:"wyższe wykształcenie"},
-  {type:"vocab",topic:"Edukacja",q:"Jak po polsku 'scholarship'?",answer:"stypendium",hint:"finansowe wsparcie dla studenta"},
-  {type:"grammar",topic:"Gramatyka",q:"Wstaw w czasie przeszłym: Ona ___ (kupić) nową sukienkę.",answer:"kupiła",hint:"rodzaj żeński, czas przeszły dokonany"},
-  {type:"grammar",topic:"Gramatyka",q:"Wstaw w czasie przyszłym: Jutro ja ___ (pojechać) do Warszawy.",answer:"pojadę",hint:"1. os. l. poj. czas przyszły dokonany"},
-  {type:"grammar",topic:"Gramatyka",q:"Użyj dopełniacza: Nie mam ___ (czas).",answer:"czasu",hint:"dopełniacz l. poj."},
-  {type:"grammar",topic:"Gramatyka",q:"Użyj narzędnika: Interesuję się ___ (muzyka).",answer:"muzyką",hint:"narzędnik l. poj. żeński"},
-  {type:"grammar",topic:"Gramatyka",q:"Zdanie warunkowe: Gdybym miał dużo pieniędzy, ___ (podróżować).",answer:"podróżowałbym",hint:"tryb warunkowy, rodzaj męski"},
-  {type:"grammar",topic:"Gramatyka",q:"Użyj celownika: Dałam prezent ___ (mama).",answer:"mamie",hint:"celownik l. poj. żeński"},
-  {type:"translation",topic:"Tłumaczenie",q:"Przetłumacz na polski: 'Although it was raining, we went for a walk.'",answer:"Chociaż padało, poszliśmy na spacer.",hint:"spójnik 'chociaż'"},
-  {type:"translation",topic:"Tłumaczenie",q:"Przetłumacz na polski: 'I would like to become a doctor in the future.'",answer:"W przyszłości chciałbym zostać lekarzem.",hint:"tryb warunkowy + narzędnik"},
-  {type:"translation",topic:"Tłumaczenie",q:"Przetłumacz na angielski: 'Moim zdaniem, ochrona środowiska jest niezwykle ważna.'",answer:"In my opinion, environmental protection is extremely important.",hint:"moim zdaniem = in my opinion"},
-  {type:"translation",topic:"Tłumaczenie",q:"Przetłumacz na polski: 'I have been learning Polish for five years.'",answer:"Uczę się polskiego od pięciu lat.",hint:"od + dopełniacz"},
-  {type:"translation",topic:"Tłumaczenie",q:"Przetłumacz na polski: 'It is important to protect the environment.'",answer:"Ważne jest, aby chronić środowisko.",hint:"'ważne jest' + bezokolicznik"},
-  {type:"mc",topic:"Gramatyka",q:"Który przypadek rządzi przyimkiem 'bez'?",answer:"dopełniacz",options:["mianownik","dopełniacz","celownik","narzędnik"],hint:"np. bez wody, bez czasu"},
-  {type:"mc",topic:"Środowisko",q:"'Globalne ocieplenie' po angielsku to:",answer:"global warming",options:["climate change","global warming","air pollution","greenhouse effect"],hint:"ocieplenie = warming"},
-  {type:"mc",topic:"Gramatyka",q:"Poprawna forma: 'Rozmawiałem ___ przyjacielem.'",answer:"z",options:["do","z","od","dla"],hint:"narzędnik wymaga przyimka..."},
-  {type:"mc",topic:"Zdrowie",q:"'Otyłość' po angielsku to:",answer:"obesity",options:["diabetes","obesity","allergy","depression"],hint:"nadmierna waga ciała"},
-  {type:"mc",topic:"Gramatyka",q:"'Piszę' to czas:",answer:"teraźniejszy",options:["przeszły","teraźniejszy","przyszły","warunkowy"],hint:"dzieje się teraz"},
-]
-};
 
-let level = "foundation";
-let activeTypes = ["vocab","grammar","translation","mc"];
-let questions = [];
-let current = 0;
-let correct = 0;
-let wrong = 0;
-let answered = false;
+const GR=[
+  {e:"🎉",m:"Czas na trochę polskiego!\\nTwój mózg jest gotowy... prawda? 😄"},
+  {e:"💪",m:"Egzamin sam się nie zda —\\nale razem damy radę! 🏆"},
+  {e:"😅",m:"Ą, Ę, Ó, Ż, Ź, Ś, Ć, Ń...\\nNikt nie mówił że będzie łatwo —\\nale będzie warto! 💫"},
+  {e:"🌟",m:"Już mówisz po polsku —\\nteraz nauczymy to zapisywać! ✏️"},
+  {e:"🧠",m:"Izabela wchodzi w tryb nauki!\\nCzas zdobyć te słówka! 📚"},
+  {e:"🚀",m:"Izabela vs polska gramatyka.\\nZakłady przyjmowane!\\n(Stawiamy na Izabelę 😄)"},
+  {e:"☕",m:"Herbatka gotowa?\\nMózg gotowy?\\nZaczynamy! 🇵🇱"},
+  {e:"🎯",m:"Plan na dziś: słówka, pisownia,\\ngramatyka i dużo dumy! 🥳"},
+  {e:"🦸‍♀️",m:"Supermoce: mówi po polsku ✓\\nCel: pisać jak mistrzyni! ✓"},
+  {e:"😂",m:"Ponoć polskie słowa są trudne...\\nAle Ty już mówisz po polsku!\\nTo połowa sukcesu! 😎"},
+];
+function showSplash(){
+  const g=GR[Math.floor(Math.random()*GR.length)];
+  document.getElementById("sp-em").textContent=g.e;
+  document.getElementById("sp-msg").innerHTML=g.m.replace(/\\n/g,"<br>");
+}
+function hideSplash(){
+  document.getElementById("splash").classList.add("hide");
+  setTimeout(()=>{document.getElementById("splash").style.display="none";},500);
+}
+showSplash();
 
-const typeLabels = {vocab:"Słownictwo", grammar:"Gramatyka", translation:"Tłumaczenie", mc:"Wielokrotny wybór"};
-const typeKeys = ["vocab","grammar","translation","mc"];
+const VOCAB=[
+  {pl:"rodzina",en:"family",t:"Rodzina",h:"r..."},
+  {pl:"mama",en:"mum / mother",t:"Rodzina",h:"m..."},
+  {pl:"tata",en:"dad / father",t:"Rodzina",h:"t..."},
+  {pl:"brat",en:"brother",t:"Rodzina",h:"b..."},
+  {pl:"siostra",en:"sister",t:"Rodzina",h:"s..."},
+  {pl:"dziadek",en:"grandfather",t:"Rodzina",h:"d..."},
+  {pl:"babcia",en:"grandmother",t:"Rodzina",h:"b..."},
+  {pl:"wujek",en:"uncle",t:"Rodzina",h:"w..."},
+  {pl:"ciotka",en:"aunt",t:"Rodzina",h:"c..."},
+  {pl:"mąż",en:"husband",t:"Rodzina",h:"m_ż"},
+  {pl:"żona",en:"wife",t:"Rodzina",h:"ż..."},
+  {pl:"chłopak",en:"boyfriend",t:"Rodzina",h:"ch..."},
+  {pl:"dziewczyna",en:"girlfriend",t:"Rodzina",h:"d..."},
+  {pl:"przyjaciel",en:"friend (male)",t:"Rodzina",h:"p..."},
+  {pl:"przyjaciółka",en:"friend (female)",t:"Rodzina",h:"p..."},
+  {pl:"ślub",en:"wedding",t:"Rodzina",h:"ś..."},
+  {pl:"telefon komórkowy",en:"mobile phone",t:"Technologia",h:"t... k..."},
+  {pl:"komputer",en:"computer",t:"Technologia",h:"k..."},
+  {pl:"internet",en:"internet",t:"Technologia",h:"i..."},
+  {pl:"media społecznościowe",en:"social media",t:"Technologia",h:"m... s..."},
+  {pl:"wiadomość",en:"message / text",t:"Technologia",h:"w..."},
+  {pl:"zdjęcie",en:"photo",t:"Technologia",h:"z..."},
+  {pl:"strona internetowa",en:"website",t:"Technologia",h:"s... i..."},
+  {pl:"muzyka",en:"music",t:"Czas wolny",h:"m..."},
+  {pl:"film",en:"film / movie",t:"Czas wolny",h:"f..."},
+  {pl:"sport",en:"sport",t:"Czas wolny",h:"s..."},
+  {pl:"książka",en:"book",t:"Czas wolny",h:"k..."},
+  {pl:"kino",en:"cinema",t:"Czas wolny",h:"k..."},
+  {pl:"teatr",en:"theatre",t:"Czas wolny",h:"t..."},
+  {pl:"restauracja",en:"restaurant",t:"Czas wolny",h:"r..."},
+  {pl:"basen",en:"swimming pool",t:"Czas wolny",h:"b..."},
+  {pl:"dom",en:"house / home",t:"Dom",h:"d..."},
+  {pl:"mieszkanie",en:"flat / apartment",t:"Dom",h:"m..."},
+  {pl:"sypialnia",en:"bedroom",t:"Dom",h:"s..."},
+  {pl:"kuchnia",en:"kitchen",t:"Dom",h:"k..."},
+  {pl:"łazienka",en:"bathroom",t:"Dom",h:"ł..."},
+  {pl:"salon",en:"living room",t:"Dom",h:"s..."},
+  {pl:"ogród",en:"garden",t:"Dom",h:"o..."},
+  {pl:"miasto",en:"city / town",t:"Dom",h:"m..."},
+  {pl:"wieś",en:"village",t:"Dom",h:"w..."},
+  {pl:"sklep",en:"shop",t:"Dom",h:"s..."},
+  {pl:"szpital",en:"hospital",t:"Dom",h:"sz..."},
+  {pl:"zdrowy",en:"healthy (male form)",t:"Zdrowie",h:"z..."},
+  {pl:"chory",en:"ill / sick (male form)",t:"Zdrowie",h:"ch..."},
+  {pl:"lekarz",en:"doctor",t:"Zdrowie",h:"l..."},
+  {pl:"lekarstwo",en:"medicine",t:"Zdrowie",h:"l..."},
+  {pl:"ćwiczenia",en:"exercise",t:"Zdrowie",h:"ć..."},
+  {pl:"dieta",en:"diet",t:"Zdrowie",h:"d..."},
+  {pl:"stres",en:"stress",t:"Zdrowie",h:"s..."},
+  {pl:"środowisko",en:"environment",t:"Środowisko",h:"ś..."},
+  {pl:"zanieczyszczenie",en:"pollution",t:"Środowisko",h:"z..."},
+  {pl:"recykling",en:"recycling",t:"Środowisko",h:"r..."},
+  {pl:"las",en:"forest",t:"Środowisko",h:"l..."},
+  {pl:"rzeka",en:"river",t:"Środowisko",h:"rz..."},
+  {pl:"energia odnawialna",en:"renewable energy",t:"Środowisko",h:"e... o..."},
+  {pl:"wakacje",en:"holiday",t:"Podróże",h:"w..."},
+  {pl:"plaża",en:"beach",t:"Podróże",h:"p..."},
+  {pl:"lotnisko",en:"airport",t:"Podróże",h:"l..."},
+  {pl:"samolot",en:"aeroplane",t:"Podróże",h:"s..."},
+  {pl:"hotel",en:"hotel",t:"Podróże",h:"h..."},
+  {pl:"paszport",en:"passport",t:"Podróże",h:"p..."},
+  {pl:"schronisko",en:"youth hostel",t:"Podróże",h:"sch..."},
+  {pl:"szkoła",en:"school",t:"Szkoła",h:"sz..."},
+  {pl:"lekcja",en:"lesson",t:"Szkoła",h:"l..."},
+  {pl:"nauczycielka",en:"teacher (female)",t:"Szkoła",h:"n..."},
+  {pl:"nauczyciel",en:"teacher (male)",t:"Szkoła",h:"n..."},
+  {pl:"praca domowa",en:"homework",t:"Szkoła",h:"p... d..."},
+  {pl:"egzamin",en:"exam",t:"Szkoła",h:"e..."},
+  {pl:"biblioteka",en:"library",t:"Szkoła",h:"b..."},
+  {pl:"przerwa",en:"break / playtime",t:"Szkoła",h:"p..."},
+  {pl:"stołówka",en:"canteen",t:"Szkoła",h:"st..."},
+  {pl:"praca",en:"work / job",t:"Praca",h:"p..."},
+  {pl:"bezrobocie",en:"unemployment",t:"Praca",h:"b..."},
+  {pl:"zawód",en:"profession",t:"Praca",h:"z..."},
+  {pl:"pieniądze",en:"money",t:"Praca",h:"p..."},
+  {pl:"Boże Narodzenie",en:"Christmas",t:"Tradycje",h:"B... N..."},
+  {pl:"Wielkanoc",en:"Easter",t:"Tradycje",h:"W..."},
+  {pl:"Wigilia",en:"Christmas Eve",t:"Tradycje",h:"W..."},
+  {pl:"tradycja",en:"tradition",t:"Tradycje",h:"t..."},
+  {pl:"moim zdaniem",en:"in my opinion",t:"Wyrażenia",h:"m... z..."},
+  {pl:"uważam że",en:"I think that",t:"Wyrażenia",h:"u... ż..."},
+  {pl:"ponieważ",en:"because",t:"Wyrażenia",h:"p..."},
+  {pl:"na przykład",en:"for example",t:"Wyrażenia",h:"n... p..."},
+  {pl:"jednak",en:"however",t:"Wyrażenia",h:"j..."},
+  {pl:"chociaż",en:"although",t:"Wyrażenia",h:"ch..."},
+  {pl:"dlatego",en:"therefore",t:"Wyrażenia",h:"d..."},
+  {pl:"w przyszłości",en:"in the future",t:"Wyrażenia",h:"w p..."},
+];
 
-function buildFilters() {
-  const row = document.getElementById("filter-row");
-  row.innerHTML = "";
-  typeKeys.forEach(t => {
-    const chip = document.createElement("button");
-    chip.className = "filter-chip" + (activeTypes.includes(t) ? " active" : "");
-    chip.textContent = typeLabels[t];
-    chip.onclick = () => toggleType(t, chip);
-    row.appendChild(chip);
-  });
+const ORT_QUIZ=[
+  {w:"m _ ż",b:"ą",o:["ą","a","o","u"],why:"mąż = husband — przed ż piszemy ą"},
+  {w:"siostr _",b:"ę",o:["e","ę","a","i"],why:"siostrę — biernik żeński, końcówka -ę"},
+  {w:"szkol _",b:"ę",o:["e","ę","a","i"],why:"lubię szkołę — biernik żeński"},
+  {w:"m _ wić",b:"ó",o:["u","ó","o","a"],why:"mówić → mowa — ó wymienia się na o"},
+  {w:"r _ ka",b:"ę",o:["e","ę","a","i"],why:"ręka = hand — ę przed k"},
+  {w:"c _ rka",b:"ó",o:["u","ó","o","a"],why:"córka → córki — ó wymienia się na o"},
+  {w:"_ leb",b:"ch",o:["ch","h","c","sz"],why:"chleb — piszemy ch, nie h"},
+  {w:"b _ dę",b:"ę",o:["e","ę","a","i"],why:"będę = I will be — ę przed d"},
+  {w:"_ ona",b:"ż",o:["z","ż","rz","sz"],why:"żona = wife — ż (nie rz)"},
+  {w:"p _ ez",b:"rz",o:["rz","ż","sz","cz"],why:"przez — po p piszemy rz"},
+  {w:"nie lubi _",b:"ę",o:["e","ę","a",""],why:"nie lubię — 1. os. l. poj. kończy się na -ę"},
+  {w:"wa _ acje",b:"k",o:["k","c","kk","ck"],why:"wakacje = holiday — wa-ka-cje"},
+  {w:"_ roda",b:"Ś",o:["Ś","S","Si","Sz"],why:"Środa — ś przed r (miękkie s)"},
+  {w:"b _ bcia",b:"a",o:["a","ą","e","o"],why:"babcia = grandmother — zwykłe a"},
+  {w:"egzami _",b:"n",o:["n","ń","ni","nn"],why:"egzamin — przed spółgłoską piszemy n"},
+  {w:"_ aba",b:"ż",o:["ż","rz","z","sz"],why:"żaba = frog — ż na początku"},
+  {w:"mu _ yka",b:"z",o:["z","ż","rz","s"],why:"muzyka = music — zwykłe z"},
+  {w:"ro _ ina",b:"dz",o:["dz","d","dź","c"],why:"rodzina = family — dz przed i"},
+  {w:"p _ aża",b:"l",o:["l","ł","ll","w"],why:"plaża = beach — zwykłe l (nie ł)"},
+  {w:"_ azienka",b:"ł",o:["ł","l","ll","w"],why:"łazienka = bathroom — ł na początku"},
+];
+
+const QUIZ_Q=[
+  {q:"Jak po polsku 'grandmother'?",a:"babcia",tp:"v",t:"Rodzina",why:"babcia — dwie sylaby ba-bcia, kończy się na -cia"},
+  {q:"Jak po polsku 'boyfriend'?",a:"chłopak",tp:"v",t:"Rodzina",why:"chłopak — ch na początku i ł (nie l)!"},
+  {q:"Jak po polsku 'social media'?",a:"media społecznościowe",tp:"v",t:"Technologia",why:"media społecznościowe — przymiotnik po rzeczowniku"},
+  {q:"Jak po polsku 'healthy'?",a:"zdrowy",tp:"v",t:"Zdrowie",why:"zdrowy (m) / zdrowa (f) — pamiętaj o rodzaju!"},
+  {q:"Jak po polsku 'environment'?",a:"środowisko",tp:"v",t:"Środowisko",why:"środowisko — zaczyna się od Ś (miękkie s)"},
+  {q:"Jak po polsku 'homework'?",a:"praca domowa",tp:"v",t:"Szkoła",why:"praca domowa — dwa słowa"},
+  {q:"Jak po polsku 'holiday'?",a:"wakacje",tp:"v",t:"Podróże",why:"wakacje — zawsze liczba mnoga! Nigdy 'wakacja'"},
+  {q:"Jak po polsku 'aeroplane'?",a:"samolot",tp:"v",t:"Podróże",why:"samolot = samo (self) + lot (flight) = self-flyer!"},
+  {q:"Jak po polsku 'canteen'?",a:"stołówka",tp:"v",t:"Szkoła",why:"stołówka — od stół (table), Ł w środku!"},
+  {q:"Jak po polsku 'in my opinion'?",a:"moim zdaniem",tp:"v",t:"Wyrażenia",why:"moim zdaniem — kluczowe wyrażenie opinii na egzaminie!"},
+  {q:"Uzupełnij: 'Ja ___ (być) Polką.'",a:"jestem",tp:"g",t:"Gramatyka",hint:"1. os. l. poj.",why:"jestem — ja jestem, ty jesteś, on/ona jest"},
+  {q:"Uzupełnij: 'Ona ___ (mieszkać) w Londynie.'",a:"mieszka",tp:"g",t:"Gramatyka",hint:"3. os. l. poj.",why:"mieszka — on/ona + -a: mieszka, lubi, mówi"},
+  {q:"Uzupełnij: 'My ___ (lubić) muzykę.'",a:"lubimy",tp:"g",t:"Gramatyka",hint:"1. os. l. mn.",why:"lubimy — my: mieszkamy, lubimy, mówimy"},
+  {q:"Czas przeszły ⭐ (kobieta): 'Wczoraj ___ (iść) do szkoły.'",a:"poszłam",tp:"g",t:"Gramatyka",hint:"kobieta = końcówka -łam",why:"poszłam — jako kobieta zawsze: -łam (ja), -łaś (ty), -ła (ona)"},
+  {q:"Czas przeszły ⭐ (kobieta): 'W zeszłym roku ___ (być) w Polsce.'",a:"byłam",tp:"g",t:"Gramatyka",hint:"kobieta = -łam",why:"byłam — żeńska forma: byłam, byłaś, była, byłyśmy"},
+  {q:"Biernik żeński ⭐: 'Lubię ___ (muzyka).'",a:"muzykę",tp:"g",t:"Gramatyka",hint:"biernik: -a → -ę",why:"muzykę — biernik żeński: muzyka→muzykę, mama→mamę"},
+  {q:"Dopełniacz: 'Nie mam ___ (czas).'",a:"czasu",tp:"g",t:"Gramatyka",hint:"po 'nie mam' = dopełniacz",why:"czasu — po 'nie mam' dopełniacz: czas→czasu"},
+  {q:"Przetłumacz: 'I have a brother and a sister.'",a:"Mam brata i siostrę.",tp:"t",t:"Tłumaczenie",hint:"brat→brata, siostra→siostrę",why:"brata i siostrę — po 'mam' biernik: brat→brata, siostra→siostrę"},
+  {q:"Przetłumacz: 'I like music.'",a:"Lubię muzykę.",tp:"t",t:"Tłumaczenie",hint:"muzyka → muzykę (biernik)",why:"muzykę — po 'lubię' biernik żeński: -a → -ę"},
+  {q:"Przetłumacz: 'I live in London.'",a:"Mieszkam w Londynie.",tp:"t",t:"Tłumaczenie",hint:"w + miejscownik: Londyn→Londynie",why:"w Londynie — po 'w' miejscownik: Londyn→Londynie"},
+  {q:"Przetłumacz: 'I want to be a doctor.'",a:"Chcę zostać lekarką.",tp:"t",t:"Tłumaczenie",hint:"chcę + zostać + narzędnik",why:"lekarką — po 'zostać' narzędnik żeński: lekarz→lekarką"},
+  {q:"Przetłumacz na angielski: 'Chodzę do szkoły codziennie.'",a:"I go to school every day.",tp:"t",t:"Tłumaczenie",hint:"codziennie = every day",why:"codziennie = every day; chodzę = I go (regularly)"},
+  {q:"Przetłumacz na angielski: 'Moim zdaniem technologia jest ważna.'",a:"In my opinion, technology is important.",tp:"t",t:"Tłumaczenie",hint:"moim zdaniem = in my opinion",why:"moim zdaniem = in my opinion — kluczowe!"},
+  {q:"Przetłumacz: 'We should protect the environment.'",a:"Powinniśmy chronić środowisko.",tp:"t",t:"Tłumaczenie",hint:"powinniśmy + bezokolicznik",why:"powinniśmy = we should; środowisko bez zmiany (biernik)"},
+  {q:"'Samolot' po angielsku to:",a:"aeroplane",tp:"mc",t:"Słownictwo",o:["train","aeroplane","car","boat"],why:"samolot = aeroplane — samo+lot = self-flyer!"},
+  {q:"Który przypadek po 'nie mam'?",a:"dopełniacz",tp:"mc",t:"Gramatyka",o:["mianownik","dopełniacz","biernik","narzędnik"],why:"po 'nie mam' zawsze dopełniacz: nie mam czasu, pieniędzy"},
+  {q:"Końcówka żeńska czasu przeszłego (ja)?",a:"-łam",tp:"mc",t:"Gramatyka",o:["-łem","-łam","-ła","-liśmy"],why:"ja (kobieta) = -łam: poszłam, byłam, robiłam"},
+  {q:"Biernik żeński: muzyka →",a:"muzykę",tp:"mc",t:"Gramatyka",o:["muzyki","muzyce","muzykę","muzyka"],why:"biernik żeński -a→-ę: muzyka→muzykę, mama→mamę"},
+  {q:"'Wakacje' po angielsku to:",a:"holiday",tp:"mc",t:"Słownictwo",o:["weather","holiday","travel","weekend"],why:"wakacje = holiday — zawsze liczba mnoga po polsku!"},
+  {q:"Jak po polsku 'because'?",a:"ponieważ",tp:"v",t:"Wyrażenia",why:"ponieważ lub 'bo' (mniej formalne) — oba poprawne"},
+];
+
+const ORT_RULES=[
+  {ltr:"Ą",nm:"A z ogonkiem",rule:"Piszemy ą przed: b, p, d, t, g, k, ch, sz, cz. Też na końcu niektórych wyrazów (są, robią). NIE na końcu bezokoliczników.",
+   ex:["m<span class='ort-hl'>ą</span>ż","s<span class='ort-hl'>ą</span>","r<span class='ort-hl'>ą</span>bek","tr<span class='ort-hl'>ą</span>bka"]},
+  {ltr:"Ę",nm:"E z ogonkiem",rule:"Piszemy ę przed: b, p, d, t, g, k, ch, sz, cz. Końcówka biernika żeńskiego: mamę, siostrę, muzykę. Na końcu wyrazu wymawia się jak zwykłe e.",
+   ex:["r<span class='ort-hl'>ę</span>ka","mam<span class='ort-hl'>ę</span>","chc<span class='ort-hl'>ę</span>","b<span class='ort-hl'>ę</span>d<span class='ort-hl'>ę</span>"]},
+  {ltr:"Ó",nm:"O z kreską",rule:"Piszemy ó gdy wymienia się na o, e lub a w innych formach słowa. Wymawia się jak u. Przykład: córka→córki, mówić→mowa.",
+   ex:["c<span class='ort-hl'>ó</span>rka","m<span class='ort-hl'>ó</span>wić","<span class='ort-hl'>ó</span>smy","wz<span class='ort-hl'>ó</span>r"]},
+  {ltr:"RZ/Ż",nm:"RZ i Ż",rule:"Piszemy rz po spółgłoskach b, p, d, t, g, k, ch, j, w, f (przez, brzeg). Piszemy ż gdy wymienia się na g, z, h, dz (żona, drużyna).",
+   ex:["p<span class='ort-hl'>rz</span>ez","b<span class='ort-hl'>rz</span>eg","<span class='ort-hl'>ż</span>ona","dru<span class='ort-hl'>ż</span>yna"]},
+  {ltr:"CH/H",nm:"CH i H",rule:"Piszemy h gdy wymienia się na g lub z (wahać→waga). We wszystkich innych przypadkach piszemy ch (chleb, chodzić).",
+   ex:["<span class='ort-hl'>ch</span>leb","<span class='ort-hl'>ch</span>odzić","<span class='ort-hl'>h</span>erbata","wa<span class='ort-hl'>h</span>ać"]},
+  {ltr:"NIE",nm:"NIE z czasownikiem",rule:"NIE z czasownikami ZAWSZE piszemy RAZEM: nie lubię, nie mam, nie wiem, nie chcę, nie idę.",
+   ex:["<span class='ort-hl'>nie</span> lubię","<span class='ort-hl'>nie</span> mam","<span class='ort-hl'>nie</span> wiem","<span class='ort-hl'>nie</span> chcę"]},
+  {ltr:"ŚĆŹ",nm:"Miękkie spółgłoski",rule:"Ś, Ć, Ź, Ń przed spółgłoskami i na końcu wyrazu. Przed samogłoskami: si, ci, zi, ni (nie, niebo, ciało).",
+   ex:["<span class='ort-hl'>ś</span>roda","<span class='ort-hl'>ć</span>wiczenie","ko<span class='ort-hl'>ń</span>","<span class='ort-hl'>ni</span>e"]},
+];
+
+const GRAM=[
+  {title:"Alfabet — litery specyficzne",body:`<div class="rt">Litery nieistniejące w angielskim</div>
+<div class="tw"><table><tr><th>Litera</th><th>Wymowa</th><th>Przykład</th></tr>
+<tr><td>ą</td><td>nosowe "on"</td><td>mąż, są</td></tr>
+<tr><td>ę</td><td>nosowe "en"</td><td>będę, ręka, mamę</td></tr>
+<tr><td>ó</td><td>jak "u"</td><td>córka, mówić</td></tr>
+<tr><td>ś/ź/ć/ń</td><td>miękkie</td><td>środa, ćwiczenie, koń</td></tr>
+<tr><td>ż / rz</td><td>jak "zh"</td><td>żona, przez</td></tr>
+<tr><td>sz / cz</td><td>jak sh / ch</td><td>szkoła, czas</td></tr>
+<tr><td>ł</td><td>jak angielskie w</td><td>łazienka, chłopak</td></tr>
+</table></div>`},
+  {title:"7 przypadków — przegląd ⭐",body:`<div class="tw"><table><tr><th>Przypadek</th><th>Pytanie</th><th>Kiedy?</th><th>Przykład</th></tr>
+<tr><td>Mianownik</td><td>Kto? Co?</td><td>podmiot</td><td>mama jest miła</td></tr>
+<tr><td>Dopełniacz</td><td>Kogo? Czego?</td><td>nie mam, do, bez</td><td>nie mam czasu</td></tr>
+<tr><td>Celownik</td><td>Komu?</td><td>daję komuś</td><td>dałam mamie</td></tr>
+<tr><td>Biernik ⭐</td><td>Kogo? Co?</td><td>lubię, mam, widzę</td><td>lubię muzykę</td></tr>
+<tr><td>Narzędnik</td><td>Kim? Czym?</td><td>jestem (zawód), z kimś</td><td>z mamą; lekarką</td></tr>
+<tr><td>Miejscownik</td><td>Gdzie?</td><td>w, na, o, po</td><td>w szkole; w Londynie</td></tr>
+<tr><td>Wołacz</td><td>—</td><td>zwracam się</td><td>Mamo! Koleżanko!</td></tr>
+</table></div>
+<div class="eg"><span class="eg-pl">Lubię muzykę</span> <span class="eg-en">— biernik (-ę)</span><br><span class="eg-pl">Nie lubię muzyki</span> <span class="eg-en">— dopełniacz po przeczeniu!</span></div>`},
+  {title:"Odmiana rzeczowników żeńskich ⭐",body:`<div class="tw"><table><tr><th>Przypadek</th><th>mama</th><th>siostra</th><th>szkoła</th></tr>
+<tr><td>Mianownik</td><td>mama</td><td>siostra</td><td>szkoła</td></tr>
+<tr><td>Dopełniacz</td><td>mamy</td><td>siostry</td><td>szkoły</td></tr>
+<tr><td>Celownik</td><td>mamie</td><td>siostrze</td><td>szkole</td></tr>
+<tr><td>Biernik ⭐</td><td>mamę</td><td>siostrę</td><td>szkołę</td></tr>
+<tr><td>Narzędnik</td><td>mamą</td><td>siostrą</td><td>szkołą</td></tr>
+<tr><td>Miejscownik</td><td>mamie</td><td>siostrze</td><td>szkole</td></tr>
+</table></div>
+<div class="eg">⭐ Biernik (-ę) po: lubię, mam, widzę, kupuję<br><span class="eg-pl">Lubię mamę, siostrę, muzykę, szkołę.</span></div>`},
+  {title:"Koniugacja — czas teraźniejszy",body:`<div class="tw"><table><tr><th>Osoba</th><th>mieszkać</th><th>lubić</th><th>mówić</th></tr>
+<tr><td>ja</td><td>mieszkam</td><td>lubię</td><td>mówię</td></tr>
+<tr><td>ty</td><td>mieszkasz</td><td>lubisz</td><td>mówisz</td></tr>
+<tr><td>on/ona</td><td>mieszka</td><td>lubi</td><td>mówi</td></tr>
+<tr><td>my</td><td>mieszkamy</td><td>lubimy</td><td>mówimy</td></tr>
+<tr><td>wy</td><td>mieszkacie</td><td>lubicie</td><td>mówicie</td></tr>
+<tr><td>oni/one</td><td>mieszkają</td><td>lubią</td><td>mówią</td></tr>
+</table></div>`},
+  {title:"Czas przeszły — FORMA ŻEŃSKA ⭐⭐⭐",body:`<div class="rt">Izabela jest kobietą — używaj żeńskich końcówek!</div>
+<div class="tw"><table><tr><th>Osoba</th><th>iść</th><th>być</th><th>robić</th><th>mówić</th></tr>
+<tr><td>ja (kobieta) ⭐</td><td>poszłam</td><td>byłam</td><td>robiłam</td><td>mówiłam</td></tr>
+<tr><td>ty (kobieta)</td><td>poszłaś</td><td>byłaś</td><td>robiłaś</td><td>mówiłaś</td></tr>
+<tr><td>ona</td><td>poszła</td><td>była</td><td>robiła</td><td>mówiła</td></tr>
+<tr><td>my (kobiety)</td><td>poszłyśmy</td><td>byłyśmy</td><td>robiłyśmy</td><td>mówiłyśmy</td></tr>
+</table></div>
+<div class="eg"><span class="eg-pl">Wczoraj poszłam do szkoły.</span> <span class="eg-en">Yesterday I went to school.</span><br><span class="eg-pl">W zeszłym roku byłam w Polsce.</span> <span class="eg-en">Last year I was in Poland.</span></div>`},
+  {title:"Ważne przyimki i przypadki",body:`<div class="tw"><table><tr><th>Przyimek</th><th>Przypadek</th><th>Przykład</th></tr>
+<tr><td>w, na, po, o, przy</td><td>Miejscownik</td><td>w szkole, na plaży</td></tr>
+<tr><td>do, bez, dla, z (od)</td><td>Dopełniacz</td><td>do domu, bez czasu</td></tr>
+<tr><td>z (razem), przed</td><td>Narzędnik</td><td>z mamą, z przyjaciółką</td></tr>
+</table></div>
+<div class="eg"><span class="eg-pl">Mieszkam w Londynie.</span> <span class="eg-en">(Miejscownik)</span><br><span class="eg-pl">Idę z przyjaciółką.</span> <span class="eg-en">(Narzędnik)</span><br><span class="eg-pl">Jadę do szkoły.</span> <span class="eg-en">(Dopełniacz)</span></div>`},
+  {title:"Wyrażenia na egzamin",body:`<div class="tw"><table><tr><th>Po polsku</th><th>Po angielsku</th></tr>
+<tr><td>Moim zdaniem...</td><td>In my opinion...</td></tr>
+<tr><td>Uważam, że...</td><td>I think that...</td></tr>
+<tr><td>Ponieważ / bo</td><td>Because</td></tr>
+<tr><td>Na przykład...</td><td>For example...</td></tr>
+<tr><td>Z jednej strony...</td><td>On one hand...</td></tr>
+<tr><td>Z drugiej strony...</td><td>On the other hand...</td></tr>
+<tr><td>Jednak / ale</td><td>However / but</td></tr>
+<tr><td>Chociaż</td><td>Although</td></tr>
+<tr><td>W przyszłości...</td><td>In the future...</td></tr>
+<tr><td>Chciałabym...</td><td>I would like... (f)</td></tr>
+</table></div>`},
+];
+
+const STAGES=[
+  {id:"S1",icon:"✍️",name:"Etap 1: Słownictwo",desc:"Wpisz polskie słowo gdy widzisz angielskie — 84 słówka AQA",req:70,type:"vocab",tip:"Wpisz polskie słowo! Wymagane 70% aby odblokować Etap 2."},
+  {id:"S2",icon:"✏️",name:"Etap 2: Pisownia",desc:"Uzupełnij brakującą literę — ą ę ó rz/ż ch/h...",req:70,type:"ort",tip:"Wymagane 70% aby odblokować Etap 3 — Quiz!"},
+  {id:"S3",icon:"🧠",name:"Etap 3: Quiz — Gramatyka i tłumaczenia",desc:"Słownictwo, gramatyka, tłumaczenia PL↔EN z wyjaśnieniami",req:70,type:"quiz",tip:"Wymagane 70% aby ukończyć App 1 i odblokować App 2!"},
+];
+
+let aStage=null,aType=null;
+let vcList=[],vcIdx=0,vcOk=0,vcBad=0,vcAns=false,vcTS={};
+let oList=[],oIdx=0,oOk=0,oBad=0,oAns=false;
+let qList=[],qIdx=0,qOk=0,qBad=0,qAns=false,qTS={};
+let _mb1=null,_mb2=null;
+
+function getProg(){try{return JSON.parse(localStorage.getItem("iz_a1")||"{}")}catch(e){return{}}}
+function setProg(id,v){const p=getProg();p[id]=Math.max(v,p[id]||0);localStorage.setItem("iz_a1",JSON.stringify(p));}
+function getBest(id){return getProg()[id]||0;}
+function isPassed(id){const s=STAGES.find(x=>x.id===id);if(!s)return false;return getBest(id)>=s.req;}
+function isUnlocked(i){if(i===0)return true;return isPassed(STAGES[i-1].id);}
+function saveH(e){try{const h=JSON.parse(localStorage.getItem("iz_a1h")||"[]");h.unshift({...e,date:new Date().toLocaleDateString("pl-PL"),time:new Date().toLocaleTimeString("pl-PL",{hour:"2-digit",minute:"2-digit"})});if(h.length>40)h.pop();localStorage.setItem("iz_a1h",JSON.stringify(h));}catch(e){}}
+function getH(){try{return JSON.parse(localStorage.getItem("iz_a1h")||"[]")}catch(e){return[]}}
+
+function showMap(){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById("screen-map").classList.add("active");
+  ["map","gram","ort","hist"].forEach(x=>document.getElementById("ni-"+x).classList.remove("active"));
+  document.getElementById("ni-map").classList.add("active");
+  document.getElementById("scroll").scrollTop=0;
+  renderMap();
+}
+function goBack(){showMap();}
+function openRef(tp){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById("screen-stage").classList.add("active");
+  ["map","gram","ort","hist"].forEach(x=>document.getElementById("ni-"+x).classList.remove("active"));
+  document.getElementById("ni-"+tp).classList.add("active");
+  document.getElementById("scroll").scrollTop=0;
+  if(tp==="gram")renderGramRef();
+  else if(tp==="ort")renderOrtRef();
+  else renderHistRef();
 }
 
-function toggleType(t, chip) {
-  if (activeTypes.includes(t)) {
-    if (activeTypes.length === 1) return;
-    activeTypes = activeTypes.filter(x => x !== t);
-    chip.classList.remove("active");
-  } else {
-    activeTypes.push(t);
-    chip.classList.add("active");
-  }
-  restartQuiz();
-}
-
-function setLevel(l) {
-  level = l;
-  document.getElementById("btn-foundation").classList.toggle("active", l === "foundation");
-  document.getElementById("btn-higher").classList.toggle("active", l === "higher");
-  restartQuiz();
-}
-
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-function restartQuiz() {
-  current = 0; correct = 0; wrong = 0; answered = false;
-  const pool = DB[level].filter(q => activeTypes.includes(q.type));
-  questions = shuffle(pool);
-  document.getElementById("results-area").classList.add("hidden");
-  document.getElementById("quiz-area").classList.remove("hidden");
-  updateStats();
-  renderQuestion();
-}
-
-function normalize(s) {
-  return s.trim().toLowerCase().replace(/[.!?,]/g, "");
-}
-
-function levenshtein(a, b) {
-  const m = a.length, n = b.length;
-  const dp = Array.from({length: m+1}, (_, i) => [i]);
-  for (let j = 0; j <= n; j++) dp[0][j] = j;
-  for (let i = 1; i <= m; i++)
-    for (let j = 1; j <= n; j++)
-      dp[i][j] = a[i-1] === b[j-1] ? dp[i-1][j-1] : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
-  return dp[m][n];
-}
-
-function diffHighlight(user, correct) {
-  const c = correct.trim();
-  let html = "";
-  let ci = 0, ui = 0;
-  const u = user.trim();
-  while (ci < c.length || ui < u.length) {
-    if (ci < c.length && ui < u.length && c[ci].toLowerCase() === u[ui].toLowerCase()) {
-      html += c[ci]; ci++; ui++;
-    } else {
-      html += '<span class="diff-missing">' + (c[ci] || "") + '</span>';
-      ci++; if (ui < u.length) ui++;
-    }
-  }
-  return html;
-}
-
-function renderQuestion() {
-  if (current >= questions.length) { showResults(); return; }
-  answered = false;
-  const q = questions[current];
-  updateStats();
-  document.getElementById("progress").style.width = ((current / questions.length) * 100) + "%";
-
-  let inputHTML = "";
-  if (q.type === "mc") {
-    const opts = shuffle(q.options);
-    inputHTML = '<div class="mc-options">' + opts.map(o =>
-      `<button class="mc-btn" onclick="checkMC(this,'${o.replace(/'/g,"\\'")}','${q.answer.replace(/'/g,"\\'")}')">` + o + `</button>`
-    ).join("") + '</div>';
-  } else {
-    inputHTML = `<textarea class="answer-input" id="ans-input" placeholder="Wpisz odpowiedź..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitAnswer();}"></textarea>
-    <div class="btn-row">
-      <button class="btn btn-primary" onclick="submitAnswer()">Sprawdź</button>
-      <button class="btn" onclick="skipQuestion()">Pomiń</button>
+function renderMap(){
+  const done=STAGES.filter((_,i)=>isPassed(STAGES[i].id)).length;
+  const pct=Math.round((done/STAGES.length)*100);
+  const allDone=done===STAGES.length;
+  let html=`<div class="welcome">
+    <div class="wc-top"><div class="wc-av">🇵🇱</div><div><div class="wc-n">Izabela</div><div class="wc-s">AQA GCSE Polish · Foundation · App 1 z 3</div></div></div>
+    <div class="wc-info">🎯 Cel App 1: opanuj słownictwo, pisownię i gramatykę<br>📱 App 2: Quiz + Pisanie + Mówienie<br>📱 App 3: Słuchanie + Czytanie<br>📅 Egzamin: lato 2027 · Hatch End</div>
+  </div>
+  <div class="prog-row">
+    <div class="prog-box"><div class="pv">${done}/${STAGES.length}</div><div class="pl">etapów ukończonych</div></div>
+    <div class="prog-box"><div class="pv">${getBest("S1")||"—"}${getBest("S1")?"%":""}</div><div class="pl">wynik słownictwa</div></div>
+  </div>
+  <div class="ob-wrap"><div class="ob" style="width:${pct}%"></div></div>
+  <div class="ob-lbl">${pct}% postępu App 1</div>
+  ${allDone?`<div style="background:var(--gbg);border:1.5px solid var(--gbd);border-radius:var(--rl);padding:14px;margin-bottom:12px;text-align:center"><div style="font-size:28px;margin-bottom:6px">🎉</div><div style="font-weight:700;color:var(--grn);font-size:16px">App 1 ukończona!</div><div style="font-size:13px;color:var(--t2);margin-top:4px">Czas na App 2!</div></div>`:""}
+  <p class="sec-t">3 etapy — ukończ kolejno</p>`;
+  STAGES.forEach((s,i)=>{
+    const u=isUnlocked(i),p=isPassed(s.id),cur=u&&!p;
+    html+=`<div class="stage-card ${!u?"locked":p?"done":cur?"current":""}" onclick="${u?"openStage("+i+")":""}">
+      <div class="sr">
+        <div class="sic ${!u?"ic-l":p?"ic-d":"ic-o"}">${!u?"🔒":s.icon}</div>
+        <div class="si">
+          <div class="sn">${s.name}</div>
+          <div class="sd">${s.desc}</div>
+          <div class="ss ${!u?"s-lock":p?"s-done":"s-open"}">${!u?"🔒 Zablokowane":p?"✅ Zaliczone! Wynik: "+getBest(s.id)+"%":s.tip}</div>
+        </div>
+        ${p?`<div style="font-size:15px;font-weight:700;color:var(--grn);margin-left:8px">${getBest(s.id)}%</div>`:""}
+      </div>
+      ${p?`<div class="s-check">✅</div>`:""}
     </div>`;
-  }
-
-  document.getElementById("quiz-area").innerHTML = `
-    <div class="question-card">
-      <div class="q-meta">
-        <span class="badge badge-level">${level === "foundation" ? "Foundation" : "Higher"}</span>
-        <span class="badge badge-type">${typeLabels[q.type]}</span>
-        <span class="badge badge-topic">${q.topic}</span>
-      </div>
-      <p class="q-text">${q.q}</p>
-      <p class="q-hint">💡 Wskazówka: <span>${q.hint}</span></p>
-      ${inputHTML}
-      <div id="feedback"></div>
-    </div>
-    <div class="btn-row" id="nav-btn" style="display:none">
-      <button class="btn btn-primary" onclick="nextQuestion()">Następne pytanie →</button>
-    </div>
-  `;
-  if (q.type !== "mc") {
-    setTimeout(() => { const i = document.getElementById("ans-input"); if(i) i.focus(); }, 80);
-  }
-}
-
-function checkMC(btn, chosen, correctAns) {
-  if (answered) return;
-  answered = true;
-  btn.parentElement.querySelectorAll(".mc-btn").forEach(b => {
-    b.disabled = true;
-    if (b.textContent.trim() === correctAns) b.classList.add("correct");
-    else if (b.textContent.trim() === chosen && chosen !== correctAns) b.classList.add("incorrect");
   });
-  const fb = document.getElementById("feedback");
-  if (chosen === correctAns) {
-    correct++;
-    fb.innerHTML = '<div class="feedback correct">✓ Doskonale! Poprawna odpowiedź.</div>';
-  } else {
-    wrong++;
-    fb.innerHTML = `<div class="feedback incorrect">✗ Błąd. Poprawna odpowiedź: <strong>${correctAns}</strong></div>`;
-  }
-  document.getElementById("nav-btn").style.display = "flex";
-  updateStats();
+  document.getElementById("map-content").innerHTML=html;
 }
 
-function submitAnswer() {
-  if (answered) return;
-  const inp = document.getElementById("ans-input");
-  if (!inp || !inp.value.trim()) return;
-  answered = true;
-  inp.disabled = true;
-  const q = questions[current];
-  const user = inp.value;
-  const isCorrect = normalize(user) === normalize(q.answer);
-  const isClose = !isCorrect && levenshtein(normalize(user), normalize(q.answer)) <= 2;
-  const fb = document.getElementById("feedback");
-  if (isCorrect) {
-    correct++;
-    fb.innerHTML = `<div class="feedback correct">✓ Doskonale! Poprawna odpowiedź.</div>`;
-  } else if (isClose) {
-    wrong++;
-    fb.innerHTML = `<div class="feedback partial">⚠ Prawie! Mały błąd ortograficzny lub brakujący znak diakrytyczny.<div class="correct-answer">Twoja odpowiedź: <em>${user}</em><br>Poprawna: <strong>${diffHighlight(user, q.answer)}</strong></div></div>`;
-  } else {
-    wrong++;
-    fb.innerHTML = `<div class="feedback incorrect">✗ Błąd.<div class="correct-answer">Twoja odpowiedź: <em>${user}</em><br>Poprawna: <strong>${q.answer}</strong></div></div>`;
-  }
-  document.getElementById("nav-btn").style.display = "flex";
-  updateStats();
+function openStage(i){
+  const s=STAGES[i];aStage=s.id;aType=s.type;
+  document.querySelectorAll(".screen").forEach(sc=>sc.classList.remove("active"));
+  document.getElementById("screen-stage").classList.add("active");
+  document.getElementById("scroll").scrollTop=0;
+  const hdr=`<div class="shdr"><div class="sh-ic">${s.icon}</div><div><div class="sh-n">${s.name}</div><div class="sh-s">${s.desc}</div></div></div>`;
+  let body="";
+  if(s.type==="vocab"){vcList=shuf([...VOCAB]);vcIdx=0;vcOk=0;vcBad=0;vcAns=false;vcTS={};body=bldVC();}
+  else if(s.type==="ort"){oList=shuf([...ORT_QUIZ]);oIdx=0;oOk=0;oBad=0;oAns=false;body=bldORT();}
+  else if(s.type==="quiz"){qList=shuf([...QUIZ_Q]);qIdx=0;qOk=0;qBad=0;qAns=false;qTS={};body=bldQ();}
+  document.getElementById("stage-content").innerHTML=hdr+body;
+  if(s.type==="vocab")rndrVC();
+  else if(s.type==="ort")rndrORT();
+  else if(s.type==="quiz")rndrQ();
 }
 
-function skipQuestion() {
-  if (answered) return;
-  answered = true;
-  wrong++;
-  const q = questions[current];
-  document.getElementById("feedback").innerHTML = `<div class="feedback partial">→ Pominięto. Poprawna odpowiedź: <strong>${q.answer}</strong></div>`;
-  document.getElementById("nav-btn").style.display = "flex";
-  updateStats();
+// ── VOCAB ──
+function bldVC(){
+  return `<div class="tip">✍️ <strong>Wpisz polskie słowo</strong> dla każdego angielskiego wyrazu.<br>Wymagane <strong>70%</strong> poprawnych aby odblokować Etap 2!</div>
+  <div class="pb-wrap"><div class="pb" id="vc-pb" style="width:0%"></div></div>
+  <div class="stats-row">
+    <div class="stat-box"><div class="sv" id="vc-q">—</div><div class="sl2">słowo</div></div>
+    <div class="stat-box"><div class="sv" style="color:var(--grn)" id="vc-ok">0</div><div class="sl2">✓ poprawne</div></div>
+    <div class="stat-box"><div class="sv" style="color:var(--red)" id="vc-bad">0</div><div class="sl2">✗ błędy</div></div>
+    <div class="stat-box"><div class="sv" id="vc-pct">—</div><div class="sl2">wynik</div></div>
+  </div>
+  <div id="vc-area"></div><div id="vc-res" class="hidden"></div>`;
 }
-
-function nextQuestion() { current++; renderQuestion(); }
-
-function updateStats() {
-  const total = correct + wrong;
-  document.getElementById("stat-q").textContent = (current < questions.length ? current + 1 : questions.length) + "/" + questions.length;
-  document.getElementById("stat-correct").textContent = correct;
-  document.getElementById("stat-wrong").textContent = wrong;
-  document.getElementById("stat-pct").textContent = total > 0 ? Math.round((correct/total)*100) + "%" : "—";
-}
-
-function showResults() {
-  document.getElementById("quiz-area").classList.add("hidden");
-  document.getElementById("progress").style.width = "100%";
-  const total = correct + wrong;
-  const pct = total > 0 ? Math.round((correct/total)*100) : 0;
-  const msg = pct >= 80 ? "Świetny wynik! Jesteś dobrze przygotowany/a do egzaminu." : pct >= 60 ? "Dobry wynik! Warto powtórzyć trudniejsze tematy." : "Ćwicz dalej — powtórz materiał i spróbuj jeszcze raz.";
-  const grade = pct >= 80 ? "9–7" : pct >= 60 ? "6–5" : pct >= 40 ? "4–3" : "2–1";
-  const scoreColor = pct >= 80 ? "var(--green)" : pct >= 60 ? "var(--warn)" : "var(--accent)";
-  document.getElementById("results-area").innerHTML = `
-    <div class="results-card">
-      <div class="results-score" style="color:${scoreColor}">${pct}%</div>
-      <div class="results-label">${msg}</div>
-      <div class="results-breakdown">
-        <div class="stat"><div class="stat-val" style="color:var(--green)">${correct}</div><div class="stat-lbl">poprawne</div></div>
-        <div class="stat"><div class="stat-val" style="color:var(--accent)">${wrong}</div><div class="stat-lbl">błędy</div></div>
-        <div class="stat"><div class="stat-val">${grade}</div><div class="stat-lbl">ocena GCSE</div></div>
-      </div>
-      <div class="btn-row" style="justify-content:center; gap:10px;">
-        <button class="btn btn-primary" onclick="restartQuiz()">Zacznij ponownie</button>
-        <button class="btn" onclick="setLevel(level==='foundation'?'higher':'foundation')">Zmień poziom</button>
-      </div>
+function rndrVC(){
+  if(vcIdx>=vcList.length){showVCres();return;}
+  vcAns=false;
+  const v=vcList[vcIdx];
+  document.getElementById("vc-pb").style.width=((vcIdx/vcList.length)*100)+"%";
+  updVC();
+  document.getElementById("vc-area").innerHTML=`
+  <div class="vc-card">
+    <div class="vc-topic">${v.t}</div>
+    <div class="vc-en">${v.en}</div>
+    <div class="vc-hint">Wskazówka: ${v.h}</div>
+    <input type="text" class="vc-inp" id="vc-inp" placeholder="Napisz po polsku..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+      onkeydown="if(event.key==='Enter'){event.preventDefault();chkVC();}">
+    <div class="btn-row" style="margin-top:10px">
+      <button class="btn btn-p" onclick="chkVC()">Sprawdź ✓</button>
+      <button class="btn btn-s" onclick="skipVC()">Pomiń</button>
     </div>
-  `;
-  document.getElementById("results-area").classList.remove("hidden");
+    <button class="listen-btn" onclick="spk('${esc(v.en)}','en-GB')">🔊 Posłuchaj po angielsku</button>
+    <div id="vc-fb"></div>
+  </div>
+  <div class="nav-after" id="vc-nav" style="display:none">
+    <button class="btn btn-p" onclick="nxtVC()">Następne słowo →</button>
+  </div>`;
+  setTimeout(()=>document.getElementById("vc-inp")?.focus(),80);
+}
+function chkVC(){
+  if(vcAns)return;
+  const inp=document.getElementById("vc-inp");
+  if(!inp||!inp.value.trim())return;
+  vcAns=true;inp.disabled=true;
+  const v=vcList[vcIdx],user=inp.value.trim();
+  const isOk=nrm(user)===nrm(v.pl);
+  const isClose=!isOk&&lev(nrm(user),nrm(v.pl))<=2;
+  if(isOk)vcOk++;else vcBad++;
+  recS(vcTS,v.t,isOk);
+  const fb=document.getElementById("vc-fb");
+  if(isOk){
+    inp.classList.add("ok");
+    fb.innerHTML=`<div class="fb ok"><div class="fb-title">✓ Doskonale!</div><button class="listen-btn" onclick="spk('${esc(v.pl)}')">🔊 Posłuchaj: ${v.pl}</button></div>`;
+  } else if(isClose){
+    inp.classList.add("close");
+    fb.innerHTML=`<div class="fb close"><div class="fb-title">⚠️ Prawie! Mały błąd.</div>
+      <div class="fb-row"><span class="fb-lbl">❌</span><span class="fb-val">Napisałaś: <em>${user}</em></span></div>
+      <div class="fb-row"><span class="fb-lbl">✅</span><span class="fb-val">Poprawnie: <strong>${dHL(user,v.pl)}</strong></span></div>
+      <div class="fb-why">💡 Sprawdź znaki diakrytyczne: ą ę ó ż ź ś ć ń ł</div>
+      <button class="listen-btn" onclick="spk('${esc(v.pl)}')">🔊 Posłuchaj: ${v.pl}</button></div>`;
+  } else {
+    inp.classList.add("bad");
+    fb.innerHTML=`<div class="fb bad"><div class="fb-title">✗ Błąd!</div>
+      <div class="fb-row"><span class="fb-lbl">❌</span><span class="fb-val">Napisałaś: <em>${user}</em></span></div>
+      <div class="fb-row"><span class="fb-lbl">✅</span><span class="fb-val">Poprawna: <strong>${v.pl}</strong></span></div>
+      <button class="listen-btn" onclick="spk('${esc(v.pl)}')">🔊 Posłuchaj: ${v.pl}</button></div>`;
+  }
+  document.getElementById("vc-nav").style.display="flex";updVC();
+}
+function skipVC(){
+  if(vcAns)return;vcAns=true;vcBad++;
+  const v=vcList[vcIdx];recS(vcTS,v.t,false);
+  const inp=document.getElementById("vc-inp");
+  if(inp){inp.disabled=true;inp.classList.add("bad");}
+  document.getElementById("vc-fb").innerHTML=`<div class="fb bad"><div class="fb-title">→ Pominięto</div>
+    <div class="fb-row"><span class="fb-lbl">✅</span><span class="fb-val">Poprawna: <strong>${v.pl}</strong></span></div>
+    <button class="listen-btn" onclick="spk('${esc(v.pl)}')">🔊 Posłuchaj: ${v.pl}</button></div>`;
+  document.getElementById("vc-nav").style.display="flex";updVC();
+}
+function nxtVC(){vcIdx++;rndrVC();}
+function updVC(){
+  const tot=vcOk+vcBad;
+  const q=document.getElementById("vc-q"),ok=document.getElementById("vc-ok"),bad=document.getElementById("vc-bad"),pct=document.getElementById("vc-pct");
+  if(q)q.textContent=(vcIdx<vcList.length?vcIdx+1:vcList.length)+"/"+vcList.length;
+  if(ok)ok.textContent=vcOk;if(bad)bad.textContent=vcBad;
+  if(pct)pct.textContent=tot>0?Math.round((vcOk/tot)*100)+"%":"—";
+}
+function showVCres(){
+  document.getElementById("vc-area").classList.add("hidden");
+  document.getElementById("vc-res").classList.remove("hidden");
+  const tot=vcOk+vcBad,pct=tot>0?Math.round((vcOk/tot)*100):0;
+  setProg(aStage,pct);saveH({stage:"Etap 1 Słownictwo",pct});
+  const pass=pct>=70;
+  const weak=Object.entries(vcTS).filter(([t,v])=>v.t>0&&Math.round((v.c/v.t)*100)<70).map(([t])=>t);
+  let bars=Object.entries(vcTS).map(([t,v])=>{const p=v.t>0?Math.round((v.c/v.t)*100):0;return`<div class="tb-row"><span class="tb-l">${t}</span><div class="tb-b"><div class="tb-f" style="width:${p}%"></div></div><span class="tb-p">${p}%</span></div>`;}).join("");
+  document.getElementById("vc-res").innerHTML=`<div class="res-card">
+    <div class="res-pct" style="color:${pass?"var(--grn)":"var(--wrn)"}">${pct}%</div>
+    <div class="res-msg">${pass?"Słownictwo zaliczone! 🎉":"Prawie! Powtórz słabe tematy."}</div>
+    <div class="res-grid">
+      <div class="stat-box"><div class="sv" style="color:var(--grn)">${vcOk}</div><div class="sl2">poprawne</div></div>
+      <div class="stat-box"><div class="sv" style="color:var(--red)">${vcBad}</div><div class="sl2">błędy</div></div>
+      <div class="stat-box"><div class="sv">${pct>=70?"✅":"❌"}</div><div class="sl2">${pct>=70?"zaliczone":"spróbuj"}</div></div>
+    </div>
+    ${bars?`<p class="sec-t">Wyniki według tematu</p><div style="margin-bottom:14px">${bars}</div>`:""}
+    ${weak.length?`<div style="background:var(--rbg);border:1px solid var(--rbd);border-radius:var(--r);padding:10px 12px;margin-bottom:14px;font-size:13px;color:var(--red)">⚠️ Słabe tematy: <strong>${weak.join(", ")}</strong></div>`:""}
+    ${pass?`<div class="res-pass"><h3>Etap 1 zaliczony! ✅</h3><p class="rp">Pisownia (Etap 2) jest teraz odblokowana!</p></div>`:`<div class="res-fail"><h3>Potrzebujesz jeszcze ${70-pct}%</h3><p class="rp">Powtórz słabe tematy i spróbuj ponownie.</p></div>`}
+    <div style="display:flex;flex-direction:column;gap:8px">
+      ${pass?`<button class="btn btn-p" onclick="openStage(1)">Przejdź do Etapu 2 →</button>`:""}
+      <button class="btn" onclick="vcList=shuf([...VOCAB]);vcIdx=0;vcOk=0;vcBad=0;vcAns=false;vcTS={};document.getElementById('vc-res').classList.add('hidden');document.getElementById('vc-area').classList.remove('hidden');rndrVC()">Spróbuj ponownie</button>
+      <button class="btn btn-s" onclick="goBack()">← Wróć do mapy</button>
+    </div>
+  </div>`;
 }
 
-buildFilters();
-restartQuiz();
+// ── ORT ──
+function bldORT(){
+  return `<div class="tip">💡 Wybierz brakującą literę. Wymagane <strong>70%</strong> aby przejść do Quizu!</div>
+  <div class="pb-wrap"><div class="pb" id="ort-pb" style="width:0%"></div></div>
+  <div class="stats-row">
+    <div class="stat-box"><div class="sv" id="ort-q">—</div><div class="sl2">pytanie</div></div>
+    <div class="stat-box"><div class="sv" style="color:var(--grn)" id="ort-ok">0</div><div class="sl2">✓</div></div>
+    <div class="stat-box"><div class="sv" style="color:var(--red)" id="ort-bad">0</div><div class="sl2">✗</div></div>
+    <div class="stat-box"><div class="sv" id="ort-pct">—</div><div class="sl2">wynik</div></div>
+  </div>
+  <div id="ort-area"></div><div id="ort-res" class="hidden"></div>`;
+}
+function rndrORT(){
+  if(oIdx>=oList.length){showORTres();return;}
+  oAns=false;
+  const q=oList[oIdx];
+  document.getElementById("ort-pb").style.width=((oIdx/oList.length)*100)+"%";
+  updORT();
+  document.getElementById("ort-area").innerHTML=`<div class="q-card">
+    <div class="q-meta"><span class="badge bf">Ortografia</span></div>
+    <div class="q-text" style="text-align:center;font-size:18px">Uzupełnij brakującą literę:</div>
+    <div style="font-size:30px;font-weight:800;text-align:center;margin:14px 0;letter-spacing:4px">${q.w.replace("_","<span style='color:var(--acc);font-size:34px'>___</span>")}</div>
+    <div class="ort-opts">${shuf([...q.o]).map(o=>`<button class="ort-o" onclick="chkORT(this,'${esc(o)}','${esc(q.b)}')">${o||"∅"}</button>`).join("")}</div>
+    <div id="ort-fb"></div>
+  </div>
+  <div class="nav-after" id="ort-nav" style="display:none"><button class="btn btn-p" onclick="nxtORT()">Dalej →</button></div>`;
+}
+function chkORT(btn,chosen,correct){
+  if(oAns)return;oAns=true;
+  const q=oList[oIdx];
+  btn.parentElement.querySelectorAll(".ort-o").forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add("correct");else if(b.textContent===chosen&&chosen!==correct)b.classList.add("wrong");});
+  const ok=chosen===correct;
+  if(ok)oOk++;else oBad++;
+  const fb=document.getElementById("ort-fb");
+  if(ok)fb.innerHTML=`<div class="fb ok"><div class="fb-title">✓ Doskonale!</div><div class="fb-why">💡 ${q.why}</div></div>`;
+  else fb.innerHTML=`<div class="fb bad"><div class="fb-title">✗ Błąd!</div>
+    <div class="fb-row"><span class="fb-lbl">❌</span><span class="fb-val">Wybrałaś: <strong>${chosen||"(puste)"}</strong></span></div>
+    <div class="fb-row"><span class="fb-lbl">✅</span><span class="fb-val">Poprawna litera: <strong>${correct}</strong></span></div>
+    <div class="fb-why">💡 ${q.why}</div></div>`;
+  document.getElementById("ort-nav").style.display="flex";updORT();
+}
+function nxtORT(){oIdx++;rndrORT();}
+function updORT(){
+  const tot=oOk+oBad;
+  const q=document.getElementById("ort-q"),ok=document.getElementById("ort-ok"),bad=document.getElementById("ort-bad"),pct=document.getElementById("ort-pct");
+  if(q)q.textContent=(oIdx<oList.length?oIdx+1:oList.length)+"/"+oList.length;
+  if(ok)ok.textContent=oOk;if(bad)bad.textContent=oBad;
+  if(pct)pct.textContent=tot>0?Math.round((oOk/tot)*100)+"%":"—";
+}
+function showORTres(){
+  document.getElementById("ort-area").classList.add("hidden");
+  document.getElementById("ort-res").classList.remove("hidden");
+  const tot=oOk+oBad,pct=tot>0?Math.round((oOk/tot)*100):0;
+  setProg(aStage,pct);saveH({stage:"Etap 2 Pisownia",pct});
+  const pass=pct>=70;
+  document.getElementById("ort-res").innerHTML=`<div class="res-card">
+    <div class="res-pct" style="color:${pass?"var(--grn)":"var(--wrn)"}">${pct}%</div>
+    <div class="res-msg">${pass?"Pisownia zaliczona! 🎉":"Sprawdź zakładkę ✏️ Pisownia i spróbuj ponownie."}</div>
+    <div class="res-grid">
+      <div class="stat-box"><div class="sv" style="color:var(--grn)">${oOk}</div><div class="sl2">poprawne</div></div>
+      <div class="stat-box"><div class="sv" style="color:var(--red)">${oBad}</div><div class="sl2">błędy</div></div>
+      <div class="stat-box"><div class="sv">${pass?"✅":"❌"}</div><div class="sl2">${pass?"zaliczone":"spróbuj"}</div></div>
+    </div>
+    ${pass?`<div class="res-pass"><h3>Etap 2 zaliczony! ✅</h3><p class="rp">Quiz (Etap 3) jest teraz odblokowany!</p></div>`:`<div class="res-fail"><h3>Potrzebujesz jeszcze ${70-pct}%</h3><p class="rp">Sprawdź zasady pisowni w zakładce ✏️ Pisownia.</p></div>`}
+    <div style="display:flex;flex-direction:column;gap:8px">
+      ${pass?`<button class="btn btn-p" onclick="openStage(2)">Przejdź do Etapu 3 →</button>`:""}
+      <button class="btn" onclick="oList=shuf([...ORT_QUIZ]);oIdx=0;oOk=0;oBad=0;oAns=false;document.getElementById('ort-res').classList.add('hidden');document.getElementById('ort-area').classList.remove('hidden');rndrORT()">Spróbuj ponownie</button>
+      <button class="btn btn-s" onclick="goBack()">← Wróć do mapy</button>
+    </div>
+  </div>`;
+}
+
+// ── QUIZ ──
+function bldQ(){
+  return `<div class="tip">💡 Gramatyka i tłumaczenia PL↔EN. Wymagane <strong>70%</strong> aby ukończyć App 1!</div>
+  <div class="pb-wrap"><div class="pb" id="qpb" style="width:0%"></div></div>
+  <div class="stats-row">
+    <div class="stat-box"><div class="sv" id="qq">—</div><div class="sl2">pytanie</div></div>
+    <div class="stat-box"><div class="sv" style="color:var(--grn)" id="qok">0</div><div class="sl2">✓</div></div>
+    <div class="stat-box"><div class="sv" style="color:var(--red)" id="qbad">0</div><div class="sl2">✗</div></div>
+    <div class="stat-box"><div class="sv" id="qpct">—</div><div class="sl2">wynik</div></div>
+  </div>
+  <div id="q-area"></div><div id="q-res" class="hidden"></div>`;
+}
+function rndrQ(){
+  if(qIdx>=qList.length){showQres();return;}
+  qAns=false;
+  const q=qList[qIdx];
+  document.getElementById("qpb").style.width=((qIdx/qList.length)*100)+"%";
+  updQ();
+  const tl={v:"Słownictwo",g:"Gramatyka",t:"Tłumaczenie",mc:"Wybór"}[q.tp]||"";
+  let inp="";
+  if(q.tp==="mc"){
+    inp=`<div class="mc-opts">${shuf([...q.o]).map(o=>`<button class="mc-o" onclick="chkMC(this,'${esc(o)}','${esc(q.a)}')">${o}</button>`).join("")}</div>`;
+  } else {
+    inp=`<textarea class="ans" id="qans" placeholder="Wpisz odpowiedź..." rows="2" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();subQ();}"></textarea>
+    <div class="btn-row"><button class="btn btn-p" onclick="subQ()">Sprawdź ✓</button><button class="btn btn-s" onclick="skipQ()">Pomiń</button></div>`;
+  }
+  document.getElementById("q-area").innerHTML=`<div class="q-card">
+    <div class="q-meta"><span class="badge bt">${q.t}</span><span class="badge bt">${tl}</span></div>
+    <button class="listen-btn" onclick="spk('${esc(q.q)}')">🔊 Wysłuchaj pytania</button>
+    <div class="q-text">${q.q}</div>
+    ${q.hint?`<div class="q-hint">💡 Wskazówka: ${q.hint}</div>`:""}
+    ${inp}<div id="qfb"></div>
+  </div>
+  <div class="nav-after" id="qnav" style="display:none"><button class="btn btn-p" onclick="nxtQ()">Dalej →</button></div>`;
+  if(q.tp!=="mc")setTimeout(()=>document.getElementById("qans")?.focus(),80);
+}
+function chkMC(btn,chosen,correct){
+  if(qAns)return;qAns=true;
+  const q=qList[qIdx];
+  btn.parentElement.querySelectorAll(".mc-o").forEach(b=>{b.disabled=true;if(b.textContent.trim()===correct)b.classList.add("correct");else if(b.textContent.trim()===chosen&&chosen!==correct)b.classList.add("wrong");});
+  const ok=chosen===correct;
+  if(ok)qOk++;else qBad++;
+  recS(qTS,q.t,ok);
+  const fb=document.getElementById("qfb");
+  if(ok)fb.innerHTML=`<div class="fb ok"><div class="fb-title">✓ Doskonale!</div>${q.why?`<div class="fb-why">💡 ${q.why}</div>`:""}</div>`;
+  else fb.innerHTML=`<div class="fb bad"><div class="fb-title">✗ Błąd!</div>
+    <div class="fb-row"><span class="fb-lbl">❌</span><span class="fb-val">Wybrałaś: <strong>${chosen}</strong></span></div>
+    <div class="fb-row"><span class="fb-lbl">✅</span><span class="fb-val">Poprawna: <strong>${correct}</strong></span></div>
+    ${q.why?`<div class="fb-why">💡 Dlaczego: ${q.why}</div>`:""}</div>`;
+  document.getElementById("qnav").style.display="flex";updQ();
+}
+function subQ(){
+  if(qAns)return;
+  const inp=document.getElementById("qans");
+  if(!inp||!inp.value.trim())return;
+  qAns=true;inp.disabled=true;
+  const q=qList[qIdx],user=inp.value;
+  const isOk=nrm(user)===nrm(q.a),isClose=!isOk&&lev(nrm(user),nrm(q.a))<=2;
+  if(isOk)qOk++;else qBad++;
+  recS(qTS,q.t,isOk);
+  const fb=document.getElementById("qfb");
+  if(isOk)fb.innerHTML=`<div class="fb ok"><div class="fb-title">✓ Doskonale!</div>${q.why?`<div class="fb-why">💡 ${q.why}</div>`:""}</div>`;
+  else if(isClose)fb.innerHTML=`<div class="fb close"><div class="fb-title">⚠️ Prawie! Mały błąd.</div>
+    <div class="fb-row"><span class="fb-lbl">❌</span><span class="fb-val">Napisałaś: <em>${user}</em></span></div>
+    <div class="fb-row"><span class="fb-lbl">✅</span><span class="fb-val">Poprawnie: <strong>${dHL(user,q.a)}</strong></span></div>
+    <div class="fb-why">💡 Sprawdź znaki: ą ę ó ż ź ś ć ń ł</div>
+    <button class="listen-btn" onclick="spk('${esc(q.a)}')">🔊 Posłuchaj poprawnej</button></div>`;
+  else fb.innerHTML=`<div class="fb bad"><div class="fb-title">✗ Błąd!</div>
+    <div class="fb-row"><span class="fb-lbl">❌</span><span class="fb-val">Napisałaś: <em>${user}</em></span></div>
+    <div class="fb-row"><span class="fb-lbl">✅</span><span class="fb-val">Poprawna: <strong>${q.a}</strong></span></div>
+    ${q.why?`<div class="fb-why">💡 Dlaczego: ${q.why}</div>`:""}
+    <button class="listen-btn" onclick="spk('${esc(q.a)}')">🔊 Posłuchaj poprawnej</button></div>`;
+  document.getElementById("qnav").style.display="flex";updQ();
+}
+function skipQ(){
+  if(qAns)return;qAns=true;qBad++;
+  const q=qList[qIdx];recS(qTS,q.t,false);
+  document.getElementById("qfb").innerHTML=`<div class="fb close"><div class="fb-title">→ Pominięto</div>
+    <div class="fb-row"><span class="fb-lbl">✅</span><span class="fb-val">Poprawna: <strong>${q.a}</strong></span></div>
+    ${q.why?`<div class="fb-why">💡 ${q.why}</div>`:""}</div>`;
+  document.getElementById("qnav").style.display="flex";updQ();
+}
+function nxtQ(){qIdx++;rndrQ();}
+function updQ(){
+  const tot=qOk+qBad;
+  const q=document.getElementById("qq"),ok=document.getElementById("qok"),bad=document.getElementById("qbad"),pct=document.getElementById("qpct");
+  if(q)q.textContent=(qIdx<qList.length?qIdx+1:qList.length)+"/"+qList.length;
+  if(ok)ok.textContent=qOk;if(bad)bad.textContent=qBad;
+  if(pct)pct.textContent=tot>0?Math.round((qOk/tot)*100)+"%":"—";
+}
+function showQres(){
+  document.getElementById("q-area").classList.add("hidden");
+  document.getElementById("q-res").classList.remove("hidden");
+  const tot=qOk+qBad,pct=tot>0?Math.round((qOk/tot)*100):0;
+  const grade=pct>=80?"9–7":pct>=60?"6–5":pct>=40?"4–3":"2–1";
+  setProg(aStage,pct);saveH({stage:"Etap 3 Quiz",pct,grade});
+  const pass=pct>=70,allDone=isPassed("S1")&&isPassed("S2")&&pass;
+  let bars=Object.entries(qTS).map(([t,v])=>{const p=v.t>0?Math.round((v.c/v.t)*100):0;return`<div class="tb-row"><span class="tb-l">${t}</span><div class="tb-b"><div class="tb-f" style="width:${p}%"></div></div><span class="tb-p">${p}%</span></div>`;}).join("");
+  document.getElementById("q-res").innerHTML=`<div class="res-card">
+    <div class="res-pct" style="color:${pass?"var(--grn)":"var(--wrn)"}">${pct}%</div>
+    <div class="res-msg">${pass?"Quiz zaliczony! 🎉":"Powtórz i spróbuj ponownie."}<br>Ocena GCSE: <strong>${grade}</strong></div>
+    <div class="res-grid">
+      <div class="stat-box"><div class="sv" style="color:var(--grn)">${qOk}</div><div class="sl2">poprawne</div></div>
+      <div class="stat-box"><div class="sv" style="color:var(--red)">${qBad}</div><div class="sl2">błędy</div></div>
+      <div class="stat-box"><div class="sv">${grade}</div><div class="sl2">ocena</div></div>
+    </div>
+    ${bars?`<p class="sec-t">Wyniki według tematu</p><div style="margin-bottom:14px">${bars}</div>`:""}
+    ${allDone?`<div class="res-pass"><h3>🎉 App 1 UKOŃCZONA!</h3><p class="rp">Czas na App 2 — Quiz mieszany, Pisanie i Mówienie!</p></div>`:pass?`<div class="res-pass"><h3>Etap 3 zaliczony! ✅</h3><p class="rp">App 1 ukończona! Przejdź do App 2.</p></div>`:`<div class="res-fail"><h3>Potrzebujesz jeszcze ${70-pct}%</h3><p class="rp">Sprawdź 📐 Gramatyka i ✏️ Pisownia i spróbuj ponownie.</p></div>`}
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <button class="btn btn-s" onclick="goBack()">← Wróć do mapy</button>
+      <button class="btn" onclick="qList=shuf([...QUIZ_Q]);qIdx=0;qOk=0;qBad=0;qAns=false;qTS={};document.getElementById('q-res').classList.add('hidden');document.getElementById('q-area').classList.remove('hidden');rndrQ()">Spróbuj ponownie</button>
+    </div>
+  </div>`;
+}
+
+// ── GRAM REF ──
+function renderGramRef(){
+  document.getElementById("stage-content").innerHTML=`<button class="back-btn" onclick="showMap()">← Powrót</button>
+  <p class="sec-t">📐 Gramatyka polska — Foundation</p>
+  ${GRAM.map((g,i)=>`<div class="gram-sec"><div class="gram-hdr" onclick="togG(${i})"><div class="gram-t">${g.title}</div><div class="gram-tog" id="gt${i}">+</div></div><div class="gram-body" id="gb${i}">${g.body}</div></div>`).join("")}`;
+}
+function togG(i){const b=document.getElementById("gb"+i),t=document.getElementById("gt"+i);if(!b||!t)return;const o=b.classList.toggle("open");t.textContent=o?"−":"+";}
+
+// ── ORT REF ──
+function renderOrtRef(){
+  document.getElementById("stage-content").innerHTML=`<button class="back-btn" onclick="showMap()">← Powrót</button>
+  <p class="sec-t">✏️ Zasady pisowni polskiej</p>
+  ${ORT_RULES.map(o=>`<div class="ort-ref-card"><div class="ort-ltr">${o.ltr}</div><div class="ort-nm">${o.nm}</div><div class="ort-rule">${o.rule}</div><div class="ort-exs">${o.ex.map(e=>`<span class="ort-ex">${e}</span>`).join("")}</div></div>`).join("")}`;
+}
+
+// ── HIST REF ──
+function renderHistRef(){
+  const h=getH();
+  document.getElementById("stage-content").innerHTML=`<button class="back-btn" onclick="showMap()">← Powrót</button>
+  <p class="sec-t">📊 Historia wyników</p>
+  ${!h.length?`<div class="card" style="text-align:center;color:var(--t2)">Brak wyników.<br>Zacznij od Etapu 1! 🚀</div>`:h.slice(0,30).map(s=>{const pc=s.pct,sc=pc>=70?"var(--grn)":pc>=50?"var(--wrn)":"var(--red)";return`<div class="card" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;margin-bottom:8px"><div><div style="font-weight:600;font-size:14px">${s.stage}</div><div style="font-size:12px;color:var(--t2)">${s.date} · ${s.time}${s.grade?" · ocena "+s.grade:""}</div></div><div style="font-size:22px;font-weight:700;color:${sc}">${pc}%</div></div>`;}).join("")}
+  ${h.length?`<button class="btn btn-s" style="width:100%;margin-top:4px;color:var(--red)" onclick="if(confirm('Usunąć całą historię?')){localStorage.removeItem('iz_a1h');renderHistRef();}">Wyczyść historię</button>`:""}`;
+}
+
+// ── MODAL ──
+function showModal(ic,ti,su,b1,b2,c1,c2){
+  document.getElementById("m-ic").textContent=ic;
+  document.getElementById("m-tit").textContent=ti;
+  document.getElementById("m-sub").textContent=su;
+  const e1=document.getElementById("m-b1"),e2=document.getElementById("m-b2");
+  e1.textContent=b1;e1.style.display="block";
+  if(b2){e2.textContent=b2;e2.style.display="block";}else e2.style.display="none";
+  _mb1=c1;_mb2=c2;
+  document.getElementById("modal").classList.add("open");
+}
+function closeModal(){document.getElementById("modal").classList.remove("open");}
+function mBtn1(){if(_mb1)_mb1();}
+function mBtn2(){if(_mb2)_mb2();}
+
+// ── UTILS ──
+function shuf(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function nrm(s){return(s||"").trim().toLowerCase().replace(/[.!?,;:]/g,"");}
+function esc(s){return(s||"").replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/"/g,"&quot;");}
+function lev(a,b){const m=a.length,n=b.length,dp=Array.from({length:m+1},(_,i)=>[i]);for(let j=0;j<=n;j++)dp[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);return dp[m][n];}
+function dHL(u,c){let h="",ci=0,ui=0;const cs=c.trim(),us=u.trim();while(ci<cs.length||ui<us.length){if(ci<cs.length&&ui<us.length&&cs[ci].toLowerCase()===us[ui].toLowerCase()){h+=cs[ci];ci++;ui++;}else{h+=`<span class="diff-e">${cs[ci]||""}</span>`;ci++;if(ui<us.length)ui++;}}return h;}
+function recS(obj,k,ok){if(!obj[k])obj[k]={c:0,t:0};obj[k].t++;if(ok)obj[k].c++;}
+function spk(text,lang){if(!text||!window.speechSynthesis)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=lang||"pl-PL";u.rate=0.82;const voices=window.speechSynthesis.getVoices();const v=voices.find(v=>v.lang.startsWith(lang&&lang.startsWith("en")?"en":"pl"));if(v)u.voice=v;window.speechSynthesis.speak(u);}
+
+// ── INIT ──
+renderMap();
+if(window.speechSynthesis){window.speechSynthesis.getVoices();window.speechSynthesis.onvoiceschanged=()=>{};}
+
 </script>
 </body>
 </html>
